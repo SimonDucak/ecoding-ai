@@ -24,14 +24,15 @@
       --card: #071014;
       --radius: 0;
       --nav: 56px;
-      --max: 1200px;
+      --max: 1400px;
       --font: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; background: var(--ink); }
     body {
-      margin: 0;
+      max-width: calc(var(--max) + 48px);
+      margin: 0 auto;
       background: var(--ink);
       color: var(--cloud);
       font-family: var(--font);
