@@ -1344,11 +1344,27 @@
       .scanverion-example-output { padding: 18px; }
       .scanverion-example pre { font-size: 11px; }
     }
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .js .rise { opacity: 0; }
+    .js .rise.is-in {
+      animation: rise-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: var(--d, 0ms);
+    }
+    .js .hero-visual.fade-in { animation: fade-in 1.15s ease 0.05s both; }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
         transition: none !important;
       }
+      .js .rise { opacity: 1; }
       .rail { overflow-x: auto; }
       .set[aria-hidden="true"] { display: none; }
       .scanverion-beam { display: none; }
@@ -1837,6 +1853,45 @@
   <script>
     (function () {
       var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.documentElement.classList.add("js");
+      if (!reduced) {
+        var visual = document.querySelector(".hero-visual");
+        if (visual) visual.classList.add("fade-in");
+        var nodes = [];
+        function watch(el, delay) {
+          el.classList.add("rise");
+          el.style.setProperty("--d", delay + "ms");
+          nodes.push(el);
+        }
+        document.querySelectorAll(".hero-copy .inner > *").forEach(function (el, i) {
+          watch(el, 80 + i * 90);
+        });
+        var logos = document.querySelector(".logos");
+        if (logos) watch(logos, 40);
+        document.querySelectorAll("section.block .wrap, footer .wrap").forEach(function (wrap) {
+          var items = [];
+          Array.prototype.forEach.call(wrap.children, function (child) {
+            if (child.classList.contains("team") || child.classList.contains("product") || child.classList.contains("foot")) {
+              Array.prototype.forEach.call(child.children, function (grand) { items.push(grand); });
+            } else {
+              items.push(child);
+            }
+          });
+          items.forEach(function (el, i) { watch(el, i * 90); });
+        });
+        if (!("IntersectionObserver" in window)) {
+          nodes.forEach(function (el) { el.classList.add("is-in"); });
+        } else {
+          var reveal = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-in");
+              reveal.unobserve(entry.target);
+            });
+          }, { threshold: 0.16, rootMargin: "0px 0px -6% 0px" });
+          nodes.forEach(function (el) { reveal.observe(el); });
+        }
+      }
       var narrow = window.matchMedia("(max-width: 980px)");
 
       var menu = document.querySelector(".menu-btn");
