@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ECoding AI | Praktická AI pre firmy</title>
+  <meta name="description" content="ECoding pomáha firmám zavádzať AI, automatizovať obchodné procesy a stavať bezpečné AI prostredia s riadením a infraštruktúrou.">
+  <meta name="theme-color" content="#0c0e10">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230bb586'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial' font-size='16' font-weight='700' fill='%23141619'%3EE%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0c0e10;
+      --ink-2: #121518;
+      --card: #15191d;
+      --line: rgba(244, 242, 237, 0.14);
+      --cream: #f4f2ed;
+      --muted: rgba(244, 242, 237, 0.7);
+      --faint: rgba(244, 242, 237, 0.46);
+      --green: #0bb586;
+      --green-2: #12c896;
+      --header: 76px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: Manrope, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(244, 242, 237, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244, 242, 237, 0.035) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(circle at 50% 20%, #000 0%, transparent 72%);
+    }
+    body > * { position: relative; z-index: 1; }
+    body.menu-open { overflow: hidden; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, input, textarea { font: inherit; color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    ul, ol { margin: 0; padding: 0; list-style: none; }
+    ::selection { background: var(--green); color: #141619; }
+    :focus { outline: none; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+
+    .skip {
+      position: absolute; left: 16px; top: -48px; z-index: 80;
+      background: var(--green); color: #141619; font-weight: 800;
+      padding: 8px 12px; text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+
+    .wrap { width: min(1180px, 100%); margin-inline: auto; padding-inline: clamp(20px, 4vw, 40px); }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      height: var(--header); padding-inline: clamp(20px, 4vw, 40px);
+      background: rgba(12, 14, 16, 0.86); backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+    }
+    .site-header.scrolled { border-bottom-color: var(--line); }
+    .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.04em; }
+    .logo-mark { width: 44px; height: 36px; display: block; }
+    .logo-ai { color: var(--green); font-size: 12px; letter-spacing: 0.14em; font-weight: 800; margin-top: 2px; }
+    .nav { display: flex; align-items: center; gap: 28px; }
+    .nav a { text-decoration: none; font-size: 14px; font-weight: 600; color: var(--muted); }
+    .nav a:hover { color: var(--cream); }
+    .nav-toggle {
+      display: none; width: 44px; height: 44px; border: 0; background: transparent; color: var(--cream);
+      padding: 0; align-items: center; justify-content: center; flex-direction: column; gap: 6px; cursor: pointer;
+    }
+    .nav-toggle span { display: block; width: 22px; height: 1.5px; background: currentColor; transition: transform 160ms ease; }
+    .nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.75px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: var(--green); color: #141619; text-decoration: none; font-weight: 800;
+      font-size: 14.5px; letter-spacing: -0.01em; padding: 15px 18px; border: 0; cursor: pointer;
+    }
+    .btn:hover { background: var(--green-2); }
+    .btn svg { width: 16px; height: 16px; transition: transform 160ms ease; }
+    .btn:hover svg { transform: translate(3px, -3px); }
+    .link-arrow {
+      display: inline-flex; align-items: center; gap: 10px; color: var(--cream); font-weight: 700;
+      text-decoration: none; border-bottom: 1px solid rgba(244, 242, 237, 0.85); padding-bottom: 3px; width: fit-content;
+    }
+    .link-arrow:hover { color: var(--green); border-color: var(--green); }
+    .link-arrow svg { width: 16px; height: 16px; }
+    .ghost {
+      background: transparent; color: var(--cream); border: 1px solid var(--line);
+      padding: 8px 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+    }
+    .ghost:hover { border-color: var(--green); color: var(--green); }
+
+    .kicker {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+      color: var(--green); font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .kicker .rest { color: var(--faint); font-weight: 700; }
+    h1 { font-size: clamp(2.7rem, 6vw, 5.15rem); line-height: 0.96; letter-spacing: -0.055em; font-weight: 700; max-width: 14ch; }
+    h2 { font-size: clamp(2rem, 4.4vw, 3.5rem); line-height: 1.02; letter-spacing: -0.045em; font-weight: 700; max-width: 18ch; }
+    .lead { margin-top: 18px; max-width: 40rem; color: var(--muted); font-size: 1.125rem; line-height: 1.5; }
+    section[id] { scroll-margin-top: 88px; }
+    .section { padding: 88px 0; }
+    .band { background: rgba(255, 255, 255, 0.02); }
+
+    .hero {
+      min-height: calc(100svh - var(--header));
+      display: flex; align-items: center;
+      padding: 28px 0 48px;
+      background:
+        radial-gradient(820px 480px at 78% 42%, rgba(11, 181, 134, 0.18), transparent 62%),
+        radial-gradient(540px 320px at 8% 88%, rgba(11, 181, 134, 0.07), transparent 60%);
+    }
+    .hero-grid { display: grid; gap: 36px; align-items: center; width: 100%; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 32px; }
+    .hero-meta { margin-top: 36px; color: var(--faint); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+
+    .hero-stage {
+      position: relative; min-height: 520px; display: grid; place-items: center;
+      perspective: 1100px; overflow: hidden;
+    }
+    .hero-stage::before {
+      content: ""; position: absolute; inset: 8% 6%; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(244, 242, 237, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244, 242, 237, 0.05) 1px, transparent 1px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(circle at 50% 48%, #000 28%, transparent 72%);
+      -webkit-mask-image: radial-gradient(circle at 50% 48%, #000 28%, transparent 72%);
+    }
+    .orbit {
+      position: absolute; inset: 0; pointer-events: none;
+      transform: rotateX(var(--tilt-x, 14deg)) rotateY(var(--tilt-y, -16deg));
+      transition: transform 220ms ease;
+    }
+    .dial, .radar, .ring { position: absolute; border-radius: 50%; }
+    .dial {
+      inset: 3%;
+      background: repeating-conic-gradient(from 0deg, rgba(244, 242, 237, 0.55) 0 1deg, transparent 1deg 12deg);
+      mask: radial-gradient(circle, transparent 94%, #000 95% 100%);
+      -webkit-mask: radial-gradient(circle, transparent 94%, #000 95% 100%);
+    }
+    .radar {
+      inset: 9%;
+      background: conic-gradient(from 0deg, transparent 0 74%, rgba(11, 181, 134, 0.02) 86%, rgba(11, 181, 134, 0.45) 100%);
+      mask: radial-gradient(circle, transparent 56%, #000 58% 100%);
+      -webkit-mask: radial-gradient(circle, transparent 56%, #000 58% 100%);
+      animation: spin 7s linear infinite;
+    }
+    .ring { border: 1px solid rgba(11, 181, 134, 0.34); animation: spin 28s linear infinite; }
+    .ring-a { inset: 7%; border-style: dashed; }
+    .ring-b { inset: 18%; animation-duration: 17s; animation-direction: reverse; border-color: rgba(244, 242, 237, 0.24); }
+    .ring-c { inset: 29%; animation-duration: 11s; border-color: rgba(11, 181, 134, 0.55); }
+    .ring i {
+      position: absolute; width: 8px; height: 8px; background: var(--green);
+      box-shadow: 0 0 14px var(--green);
+    }
+    .ring-a i:nth-child(1) { top: -4px; left: calc(50% - 4px); }
+    .ring-a i:nth-child(2) { bottom: 14%; left: -4px; background: var(--cream); box-shadow: none; }
+    .ring-b i:nth-child(1) { top: calc(50% - 4px); right: -4px; }
+    .ring-b i:nth-child(2) { top: -3px; left: 18%; width: 5px; height: 5px; }
+    .ring-b i:nth-child(3) { bottom: -4px; left: 46%; background: transparent; box-shadow: none; border: 1.5px solid var(--green); }
+    .ring-c i { top: -4px; left: 64%; }
+    .stage-card {
+      position: relative; z-index: 1; width: min(100%, 560px);
+      background: rgba(12, 14, 16, 0.82); border: 1px solid var(--line);
+      padding: 22px 18px 16px; backdrop-filter: blur(8px); overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    }
+    .stage-card::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(240px 180px at var(--mx, 70%) var(--my, 30%), rgba(11, 181, 134, 0.18), transparent 70%);
+    }
+    .stage-card::after {
+      content: ""; position: absolute; left: 0; right: 0; height: 42%; top: -42%;
+      background: linear-gradient(to bottom, transparent, rgba(11, 181, 134, 0.12), transparent);
+      animation: card-scan 5.4s ease-in-out infinite; pointer-events: none;
+    }
+    #hero[data-paused="true"] .orbit *,
+    #hero[data-paused="true"] .stage-card::after,
+    #hero[data-paused="true"] .sig i { animation-play-state: paused; }
+    .sig {
+      position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 8px; height: 28px; margin-top: 14px; align-items: end;
+    }
+    .sig i { height: 8px; background: rgba(244, 242, 237, 0.14); animation: sig-idle 1.6s ease-in-out infinite; }
+    .sig i:nth-child(2) { animation-delay: 0.18s; }
+    .sig i:nth-child(3) { animation-delay: 0.36s; }
+    .sig i:nth-child(4) { animation-delay: 0.54s; }
+    .stage-card[data-step="0"] .sig i:nth-child(1),
+    .stage-card[data-step="1"] .sig i:nth-child(2),
+    .stage-card[data-step="2"] .sig i:nth-child(3),
+    .stage-card[data-step="3"] .sig i:nth-child(4) {
+      height: 28px; background: var(--green); box-shadow: 0 0 12px rgba(11, 181, 134, 0.85); animation: none;
+    }
+    #hero-pipe .packet { display: none; }
+    #hero-pipe .packet::after {
+      content: ""; position: absolute; right: 100%; top: 50%; width: 42px; height: 2px; margin-top: -1px;
+      background: linear-gradient(90deg, transparent, var(--green));
+    }
+    #hero-pipe .note.is-fresh { animation: note-in 0.45s ease; }
+    .stage-bar, .panel-bar {
+      position: relative; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      margin-bottom: 18px; color: var(--faint); font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .pulse { display: inline-flex; align-items: center; gap: 8px; color: var(--green); }
+    .pulse::before {
+      content: ""; width: 8px; height: 8px; background: var(--green);
+      box-shadow: 0 0 0 0 rgba(11, 181, 134, 0.65); animation: ping 1.8s ease-out infinite;
+    }
+
+    .promises { background: var(--green); color: #141619; }
+    .promise-grid { display: grid; }
+    .promise-grid li { display: flex; gap: 14px; align-items: baseline; padding: 22px 8px; font-weight: 800; font-size: 1.125rem; letter-spacing: -0.03em; }
+    .promise-grid li + li { border-top: 1px solid rgba(20, 22, 25, 0.18); }
+    .promise-grid span { font-size: 12px; letter-spacing: 0.08em; }
+    .logo-rail { overflow: hidden; background: #1c2126; padding: 26px 0; }
+    .logo-track { display: flex; width: max-content; animation: logo-marquee 26s linear infinite; }
+    .logo-set { display: flex; align-items: center; gap: 64px; padding-right: 64px; }
+    .logo-set img { height: 42px; width: auto; max-width: 180px; object-fit: contain; display: block; filter: brightness(0) invert(1); }
+    .logo-set img.logo-roche { width: 42px; height: 42px; filter: none; }
+    .logo-set img.logo-vuava { height: 20px; }
+    @keyframes logo-marquee { to { transform: translateX(-50%); } }
+
+    .service-studio { display: grid; gap: 22px; margin-top: 36px; }
+    .pick {
+      margin-bottom: 12px; color: var(--faint); font-size: 12px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .stab {
+      display: grid; grid-template-columns: minmax(0, 1fr) 36px; column-gap: 14px; align-items: center;
+      width: 100%; text-align: left; background: transparent; color: inherit;
+      border: 1px solid var(--line); border-bottom: 0; padding: 18px 16px; cursor: pointer;
+      transition: background 160ms ease;
+    }
+    .stab:last-of-type { border-bottom: 1px solid var(--line); }
+    .stab .num { grid-column: 1; color: var(--green); font-size: 12px; font-weight: 800; display: block; margin-bottom: 8px; }
+    .stab h3 { grid-column: 1; font-size: clamp(1.25rem, 2vw, 1.6rem); letter-spacing: -0.03em; margin-bottom: 6px; }
+    .stab p { grid-column: 1; color: var(--muted); }
+    .stab .go {
+      grid-column: 2; grid-row: 1 / span 3; width: 36px; height: 36px;
+      display: grid; place-items: center; border: 1px solid var(--line); color: var(--cream);
+    }
+    .stab .go svg { width: 16px; height: 16px; transition: transform 160ms ease; }
+    .stab:hover { background: rgba(11, 181, 134, 0.08); }
+    .stab:hover .go { border-color: var(--green); color: var(--green); }
+    .stab:hover .go svg { transform: translate(2px, -2px); }
+    .stab[aria-selected="true"] { background: rgba(11, 181, 134, 0.1); box-shadow: inset 3px 0 0 var(--green); }
+    .stab[aria-selected="true"] h3 { color: var(--green); }
+    .stab[aria-selected="true"] .go { background: var(--green); border-color: var(--green); color: #141619; }
+    .service-panel { display: none; }
+    .service-panel.is-active { display: block; }
+    .viz-shell { background: var(--card); border: 1px solid var(--line); padding: 20px 18px 16px; min-height: 220px; position: relative; }
+    .check { margin-top: 8px; }
+    .check li { display: flex; gap: 10px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--line); color: var(--cream); }
+    .check li::before { content: ""; width: 8px; height: 8px; margin-top: 8px; background: var(--green); flex: none; }
+
+    .studio { display: grid; gap: 18px; margin-top: 32px; align-items: start; min-width: 0; }
+    .studio > div:first-child { min-width: 0; }
+    .ctrl-list { border-top: 1px solid var(--line); max-height: 520px; overflow: auto; scrollbar-color: rgba(11, 181, 134, 0.7) transparent; }
+    .ctrl {
+      display: grid; grid-template-columns: minmax(0, 1fr) 18px; column-gap: 10px; align-items: center;
+      width: 100%; text-align: left; background: transparent; color: inherit;
+      border: 0; border-bottom: 1px solid var(--line); padding: 14px 12px; cursor: pointer;
+      transition: background 160ms ease;
+    }
+    .ctrl strong { grid-column: 1; grid-row: 1; letter-spacing: -0.02em; font-size: 1rem; }
+    .ctrl::after {
+      content: ""; grid-column: 2; grid-row: 1; justify-self: end;
+      width: 8px; height: 8px;
+      border-top: 1.6px solid currentColor; border-right: 1.6px solid currentColor;
+      transform: rotate(45deg); opacity: 0.7;
+    }
+    .ctrl:hover { background: rgba(11, 181, 134, 0.08); }
+    .ctrl:hover::after { border-color: var(--green); opacity: 1; }
+    .ctrl-copy { grid-column: 1 / -1; grid-row: 2; display: block; color: var(--muted); font-size: 13.5px; max-height: 0; overflow: hidden; }
+    .ctrl[aria-pressed="true"] { background: rgba(11, 181, 134, 0.1); box-shadow: inset 3px 0 0 var(--green); }
+    .ctrl[aria-pressed="true"] strong { color: var(--green); }
+    .ctrl[aria-pressed="true"]::after { border-color: var(--green); opacity: 1; }
+    .ctrl[aria-pressed="true"] .ctrl-copy { max-height: 5em; margin-top: 6px; }
+    .stage {
+      position: relative; background:
+        radial-gradient(520px 220px at 80% 0%, rgba(11, 181, 134, 0.16), transparent 60%),
+        var(--card);
+      border: 1px solid var(--line); min-height: 440px; padding: 26px 22px 22px; overflow: hidden;
+    }
+    .tick { position: absolute; width: 14px; height: 14px; border: 1.5px solid var(--green); pointer-events: none; }
+    .tl { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+    .tr { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
+    .bl { bottom: 10px; left: 10px; border-right: 0; border-top: 0; }
+    .br { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+    .stage h3 { font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.04em; max-width: 18ch; }
+    .stage-text { color: var(--muted); margin: 10px 0 22px; max-width: 46ch; }
+    #stage-viz { position: relative; z-index: 1; }
+
+    .pipe-rail { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); height: 42px; align-items: center; }
+    .pipe-line { position: absolute; left: calc(100% / var(--n) / 2); right: calc(100% / var(--n) / 2); height: 2px; top: 50%; background: rgba(244, 242, 237, 0.16); }
+    .pipe-fill { display: block; height: 100%; width: 0; background: var(--green); box-shadow: 0 0 12px rgba(11, 181, 134, 0.8); }
+    .packet {
+      position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px; left: 0;
+      background: var(--green); transform: translateX(-50%);
+      box-shadow: 0 0 0 6px rgba(11, 181, 134, 0.18), 0 0 22px var(--green);
+    }
+    .dot { width: 13px; height: 13px; justify-self: center; border: 1.5px solid rgba(244, 242, 237, 0.45); background: var(--card); position: relative; z-index: 1; }
+    .dot.is-on { background: var(--green); border-color: var(--green); box-shadow: 0 0 12px var(--green); }
+    .pipe-names { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+    .node {
+      min-width: 0; background: rgba(12, 14, 16, 0.35); border: 1px solid var(--line); color: var(--faint);
+      text-align: left; padding: 10px 8px; cursor: pointer; font-weight: 700; font-size: 14px; letter-spacing: -0.03em;
+      line-height: 1.15; white-space: nowrap;
+      transition: border-color 160ms ease, color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+    .node:hover { color: var(--cream); border-color: var(--green); background: rgba(11, 181, 134, 0.1); transform: translateY(-2px); }
+    .node em { display: block; font-style: normal; color: var(--green); font-size: 10px; letter-spacing: 0.12em; margin-bottom: 6px; }
+    .node.is-on { color: var(--cream); border-color: rgba(11, 181, 134, 0.7); background: rgba(11, 181, 134, 0.08); }
+    .node.is-on:hover { background: rgba(11, 181, 134, 0.16); }
+    #hero-pipe { container-type: inline-size; }
+    #hero-pipe .pipe { overflow: visible; }
+    #hero-pipe .pipe-rail,
+    #hero-pipe .pipe-names { min-width: 0; }
+    #hero-pipe .node {
+      padding: clamp(10px, 2.4cqi, 14px) clamp(8px, 2.8cqi, 16px);
+      font-size: clamp(11px, 3.2cqi, 14px);
+    }
+    .note { min-height: 2.6em; margin-top: 14px; color: var(--muted); }
+
+    .lanes { display: grid; gap: 14px; }
+    .lane { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(40px, 1.2fr) minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+    .lane span { font-weight: 700; letter-spacing: -0.02em; }
+    .lane i { height: 2px; background: rgba(244, 242, 237, 0.12); position: relative; overflow: hidden; }
+    .lane i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 0; background: var(--green); animation: draw 1.8s ease forwards; }
+    .lane.ask i::after { width: 68%; background: var(--cream); animation: none; }
+    .lane.no i::after { width: 38%; background: rgba(244, 242, 237, 0.35); animation: none; }
+    .lane em { font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); }
+    .lane.ask em, .lane.no em { color: var(--faint); }
+
+    #gov-preview { container-type: inline-size; }
+    .gov-split { display: grid; gap: 22px; }
+    .gov-k { margin-bottom: 10px; color: var(--faint); font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+    .gov-sws { display: grid; gap: 8px; }
+    .gov-sw {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      width: 100%; background: rgba(12, 14, 16, 0.45); border: 1px solid var(--line); color: var(--faint);
+      padding: 13px 14px; cursor: pointer; text-align: left; font-weight: 700; letter-spacing: -0.02em;
+    }
+    .gov-sw:hover { border-color: var(--green); color: var(--cream); }
+    .gov-sw i {
+      width: 44px; height: 24px; flex: none; border: 1px solid var(--line); background: #0c0e10; position: relative;
+    }
+    .gov-sw i::after {
+      content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: var(--faint);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+    .gov-sw.is-on { color: var(--cream); border-color: rgba(11, 181, 134, 0.55); }
+    .gov-sw.is-on i { border-color: var(--green); background: rgba(11, 181, 134, 0.16); }
+    .gov-sw.is-on i::after { transform: translateX(20px); background: var(--green); box-shadow: 0 0 10px rgba(11, 181, 134, 0.75); }
+    .hitl-card {
+      display: grid; min-height: 168px; border: 1px solid var(--line); background: rgba(12, 14, 16, 0.45); padding: 16px;
+      transition: opacity 280ms ease;
+    }
+    .hitl-ask, .hitl-done { grid-area: 1 / 1; }
+    .hitl[data-phase="done"] .hitl-ask,
+    .hitl:not([data-phase="done"]) .hitl-done { visibility: hidden; }
+    .hitl[data-phase="reset"] .hitl-card { opacity: 0.28; }
+    .hitl-who { display: block; margin-bottom: 6px; color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .hitl-card strong { display: block; margin-bottom: 16px; font-size: 1.2rem; letter-spacing: -0.03em; }
+    .hitl-log { margin: 4px 0 0; display: grid; gap: 8px; min-height: 9.2em; }
+    .hitl-log li {
+      display: flex; align-items: center; gap: 10px; min-height: 1.2em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px; line-height: 1.3; color: var(--cream);
+    }
+    .hitl-log i { width: 8px; height: 8px; flex: none; background: rgba(244, 242, 237, 0.28); }
+    .hitl-log li.is-on i { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .hitl-ok {
+      background: var(--green); color: #141619; border: 0; padding: 12px 18px; font-weight: 800; cursor: pointer;
+    }
+    .hitl-ok:hover { background: var(--green-2); }
+    .hitl[data-phase="ask"] .hitl-ok { animation: hitl-wait 1.5s ease-out infinite; }
+    .hitl[data-phase="press"] .hitl-ok { transform: translateY(2px) scale(0.97); filter: brightness(0.88); }
+    .hitl-state { margin-top: 12px; color: var(--muted); }
+    @container (min-width: 620px) {
+      .gov-split { grid-template-columns: 1fr 0.92fr; gap: 28px; align-items: start; }
+    }
+    @keyframes hitl-wait {
+      0% { box-shadow: 0 0 0 0 rgba(11, 181, 134, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(11, 181, 134, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(11, 181, 134, 0); }
+    }
+
+    .bars { display: flex; align-items: flex-end; gap: 6px; height: 160px; }
+    .bars span {
+      flex: 1; height: 18%; background: linear-gradient(180deg, var(--green), rgba(11, 181, 134, 0.25));
+      transform-origin: bottom; animation: eq 1.15s ease-in-out infinite;
+      animation-delay: calc(var(--d) * 70ms);
+    }
+    .switches { display: grid; gap: 8px; }
+    .switches button {
+      display: flex; justify-content: space-between; gap: 12px; align-items: center;
+      background: rgba(12, 14, 16, 0.45); border: 1px solid var(--line); color: var(--cream);
+      padding: 14px 14px; cursor: pointer; text-align: left;
+    }
+    .switches em { font-style: normal; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); }
+    .switches button[data-state="ask"] em { color: var(--cream); }
+    .switches button[data-state="no"] { color: var(--faint); }
+    .switches button[data-state="no"] em { color: var(--faint); }
+    .log {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px; line-height: 1.7; min-height: 180px; color: var(--muted);
+    }
+    .log b { color: var(--green); font-weight: 700; }
+    .incident-status { border: 1px solid var(--line); padding: 18px; margin-bottom: 16px; }
+    .incident-status b { display: block; font-size: 1.4rem; letter-spacing: -0.03em; margin-bottom: 4px; }
+    .incident-status[data-state="signal"] { border-color: rgba(244, 242, 237, 0.45); }
+    .incident-status[data-state="contained"], .incident-status[data-state="restored"], .incident-status[data-state="ok"] { border-color: rgba(11, 181, 134, 0.7); }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .timeline li { border-top: 2px solid var(--line); padding-top: 8px; color: var(--faint); font-size: 13px; font-weight: 700; }
+    .timeline li.is-on { border-color: var(--green); color: var(--cream); }
+    .versions { display: grid; gap: 8px; }
+    .versions article {
+      display: flex; justify-content: space-between; gap: 12px; align-items: center;
+      border: 1px solid var(--line); padding: 16px; color: var(--faint);
+    }
+    .versions article b { color: var(--cream); font-size: 1.15rem; letter-spacing: -0.03em; }
+    .versions article.is-current { border-color: var(--green); color: var(--cream); box-shadow: inset 3px 0 0 var(--green); }
+    .meters { display: grid; gap: 16px; }
+    .meters label { display: grid; gap: 8px; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+    .meters i { display: block; height: 8px; background: rgba(244, 242, 237, 0.1); font-style: normal; }
+    .meters i::before { content: ""; display: block; height: 100%; width: 0; background: var(--green); animation: grow 1.4s ease forwards; }
+    .loop { position: relative; min-height: 240px; display: grid; place-items: center; }
+    .loop-spin { position: absolute; width: min(220px, 70%); aspect-ratio: 1; border: 1px dashed rgba(11, 181, 134, 0.55); border-radius: 50%; animation: spin 9s linear infinite; }
+    .loop-spin i { position: absolute; top: -6px; left: 50%; width: 12px; height: 12px; background: var(--green); box-shadow: 0 0 16px var(--green); }
+    .loop ul { position: absolute; inset: 0; }
+    .loop li { position: absolute; font-weight: 800; letter-spacing: -0.03em; }
+    .loop li:nth-child(1) { top: 8px; left: 50%; transform: translateX(-50%); }
+    .loop li:nth-child(2) { right: 0; top: 50%; }
+    .loop li:nth-child(3) { bottom: 8px; left: 50%; transform: translateX(-50%); }
+    .loop li:nth-child(4) { left: 0; top: 50%; }
+
+    .prompt-line { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; line-height: 1.55; min-height: 4.6em; margin-bottom: 12px; }
+    .caret { display: inline-block; width: 8px; height: 1em; background: var(--green); margin-left: 2px; vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
+    .prompt-k { color: var(--green); font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; margin: 8px 0; }
+    .files li { padding: 8px 0; border-top: 1px solid var(--line); color: var(--faint); opacity: 0; transform: translateY(6px); }
+    .files li.in { opacity: 1; transform: none; transition: opacity 280ms ease, transform 280ms ease; color: var(--cream); }
+    .files li.in::before { content: "✓ "; color: var(--green); }
+
+    .split { display: grid; gap: 28px; align-items: center; }
+    .tower { display: grid; gap: 8px; }
+    .slab {
+      display: flex; justify-content: space-between; gap: 12px; align-items: baseline;
+      border: 1px solid var(--line); padding: 14px 16px; color: var(--faint);
+      background: rgba(12, 14, 16, 0.35);
+    }
+    .slab strong { color: var(--cream); letter-spacing: -0.02em; }
+    .slab em { font-style: normal; font-size: 13px; text-align: right; }
+    .slab.lit { color: var(--cream); border-color: rgba(11, 181, 134, 0.75); box-shadow: inset 3px 0 0 var(--green); }
+
+    .standards { display: grid; gap: 12px; margin-top: 28px; }
+    .standard { border: 1px solid var(--line); background: var(--card); padding: 26px 22px; min-height: 148px; transition: border-color 160ms ease, transform 160ms ease; }
+    .standard:hover { border-color: var(--green); transform: translateY(-3px); }
+    .standard span { display: block; color: var(--green); font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+    .standard strong { display: block; margin-top: 16px; font-size: clamp(1.4rem, 2vw, 1.8rem); letter-spacing: -0.03em; }
+
+    .steps { display: grid; gap: 18px; margin-top: 28px; position: relative; }
+    .step { border-top: 2px solid var(--line); padding-top: 14px; transition: border-color 200ms ease; }
+    .step.is-on { border-color: var(--green); }
+    .step span { color: var(--green); font-size: 13px; font-weight: 800; }
+    .step strong { display: block; margin: 10px 0 6px; font-size: 1.35rem; letter-spacing: -0.03em; }
+    .step p { color: var(--muted); }
+    .reasons { margin-top: 8px; }
+    .reasons li { padding: 18px 0; border-top: 1px solid var(--line); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.03em; }
+    .reasons li:last-child { border-bottom: 1px solid var(--line); }
+
+    .scan-stage { display: grid; gap: 16px; align-items: stretch; }
+    .scan-doc {
+      position: relative; min-height: 190px; border: 1px solid var(--line); overflow: hidden;
+      background: linear-gradient(180deg, rgba(11, 181, 134, 0.1), transparent 42%), rgba(12, 14, 16, 0.55);
+      padding: 18px;
+    }
+    .scan-doc b { display: block; margin-bottom: 18px; color: var(--green); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .scan-doc i { display: block; height: 10px; margin-top: 10px; background: rgba(244, 242, 237, 0.16); }
+    .scan-doc i.short { width: 58%; }
+    .scan-beam {
+      position: absolute; left: 0; right: 0; top: 12%; height: 2px; background: var(--green);
+      box-shadow: 0 0 18px var(--green); animation: sweep 2.8s ease-in-out infinite;
+    }
+    .scan-json {
+      margin: 0; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px; line-height: 1.55; white-space: pre-wrap;
+    }
+    .scan-json b { display: block; margin-bottom: 8px; color: var(--green); font-family: Manrope, sans-serif; font-size: 11px; letter-spacing: 0.14em; }
+    .see-grid, .model-grid { display: grid; gap: 12px; margin-top: 28px; }
+    .see-grid article, .model-grid article { border: 1px solid var(--line); background: var(--card); padding: 22px; }
+    .see-grid span, .model-grid span { color: var(--green); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; }
+    .see-grid strong, .model-grid strong { display: block; margin: 12px 0 8px; font-size: 1.2rem; letter-spacing: -0.03em; }
+    .see-grid p, .model-grid p { color: var(--muted); }
+    .model-pitch { margin-top: 80px; }
+    #scanverion { background: #fff; color: #141619; }
+    #scanverion h2 { color: #141619; max-width: 22ch; }
+    .products-head { margin-bottom: 56px; padding-bottom: 28px; border-bottom: 1px solid rgba(20, 22, 25, 0.1); }
+    #scanverion .products-head h2 { max-width: none; font-size: clamp(2.8rem, 7vw, 5rem); letter-spacing: -0.055em; line-height: 0.95; }
+    #scanverion .lead { color: rgba(20, 22, 25, 0.72); }
+    #scanverion .kicker .rest { color: rgba(20, 22, 25, 0.46); }
+    #scanverion .check li { color: #141619; border-top-color: rgba(20, 22, 25, 0.12); }
+    #scanverion .link-arrow { color: #141619; border-bottom-color: rgba(20, 22, 25, 0.85); }
+    #scanverion .link-arrow:hover { color: var(--green); border-bottom-color: var(--green); }
+    #scanverion .viz-shell { box-shadow: 0 24px 60px rgba(20, 22, 25, 0.16); }
+    #scanverion .see-grid article,
+    #scanverion .model-grid article { background: #f4f2ed; border-color: transparent; color: #141619; }
+    #scanverion .see-grid p,
+    #scanverion .model-grid p { color: rgba(20, 22, 25, 0.68); }
+    @keyframes sweep { 50% { top: 86%; } }
+
+    .contact-grid { display: grid; gap: 36px; }
+    .email-link { display: inline-flex; margin-top: 26px; font-size: clamp(1.15rem, 2vw, 1.45rem); font-weight: 700; letter-spacing: -0.03em; }
+    .field { display: grid; gap: 6px; margin-bottom: 8px; }
+    label { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    input, textarea { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 12px 0 14px; color: var(--cream); }
+    textarea { min-height: 120px; resize: vertical; }
+    input:focus, textarea:focus { border-bottom-color: var(--green); }
+    input:-webkit-autofill { -webkit-text-fill-color: var(--cream); box-shadow: 0 0 0 1000px var(--ink) inset; caret-color: var(--cream); }
+    .form-note, .form-status { color: var(--faint); font-size: 14px; margin-top: 12px; }
+    .form-status:empty { display: none; }
+    .contact .btn { margin-top: 8px; width: 100%; }
+    .team-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .team-card { min-width: 0; }
+    .team-card img { width: 100%; height: auto; aspect-ratio: 1 / 1.12; object-fit: cover; object-position: center 18%; display: block; background: #1c2126; }
+    .team-card .role { margin: 16px 0 6px; color: var(--green); font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+    .team-card h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); letter-spacing: -0.03em; }
+    .team-links { display: flex; flex-wrap: wrap; gap: 12px 18px; margin-top: 14px; }
+    .team-links a { color: var(--cream); font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 1px solid rgba(244, 242, 237, 0.45); padding-bottom: 2px; }
+    .team-links a:hover { color: var(--green); border-bottom-color: var(--green); }
+
+    .footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 14px; }
+    .footer-row { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; align-items: center; }
+    .footer a { color: var(--cream); font-weight: 700; }
+    .footer p { margin-top: 8px; }
+    .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes ping { 70% { box-shadow: 0 0 0 8px rgba(11, 181, 134, 0); } 100% { box-shadow: 0 0 0 0 rgba(11, 181, 134, 0); } }
+    @keyframes card-scan { to { top: 112%; } }
+    @keyframes sig-idle { 50% { height: 16px; } }
+    @keyframes note-in { from { opacity: 0.15; transform: translateY(6px); } }
+    @keyframes draw { to { width: 100%; } }
+    @keyframes eq { 0%, 100% { height: 18%; } 50% { height: var(--h); } }
+    @keyframes grow { to { width: var(--to); } }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    @media (min-width: 800px) {
+      .promise-grid { grid-template-columns: repeat(3, 1fr); }
+      .promise-grid li { padding: 28px; }
+      .promise-grid li + li { border-top: 0; border-left: 1px solid rgba(20, 22, 25, 0.18); }
+      .steps { grid-template-columns: repeat(5, 1fr); }
+      .scan-stage { grid-template-columns: 0.82fr 1.18fr; }
+      .see-grid { grid-template-columns: 1fr 1fr; }
+      .model-grid { grid-template-columns: repeat(3, 1fr); }
+      .standards { grid-template-columns: 1fr 1fr; }
+      .service-panel .check { display: grid; grid-template-columns: 1fr 1fr; column-gap: 22px; }
+    }
+    @media (min-width: 980px) {
+      .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 20px; }
+      .section { padding: 112px 0; }
+      .service-studio { grid-template-columns: 0.86fr 1.14fr; gap: 36px; align-items: start; }
+      .studio { grid-template-columns: 320px 1fr; gap: 22px; }
+      .split { grid-template-columns: 1fr 1fr; gap: 64px; }
+      .standards { grid-template-columns: repeat(4, 1fr); }
+      .contact-grid { grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start; }
+      .team-row { gap: 28px; max-width: 720px; }
+    }
+    @media (max-width: 979px) {
+      .header-cta, .nav { display: none; }
+      .nav-toggle { display: flex; }
+      .nav.is-open {
+        display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+        position: absolute; top: var(--header); left: 0; right: 0;
+        background: #0c0e10; border-bottom: 1px solid var(--line); padding: 8px 24px 28px;
+      }
+      .nav.is-open a { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; color: rgba(244, 242, 237, 0.8); padding: 12px 0; width: 100%; }
+      .hero { min-height: 0; }
+      .pipe { overflow-x: auto; }
+      .pipe-rail, .pipe-names { min-width: calc(var(--n) * 112px); }
+      #hero-pipe .pipe { overflow: visible; }
+      #hero-pipe .pipe-rail,
+      #hero-pipe .pipe-names { min-width: 0; }
+      .node { font-size: 13px; padding: 8px 6px; }
+      #hero-pipe .node {
+        padding: clamp(10px, 2.4cqi, 14px) clamp(8px, 2.8cqi, 16px);
+        font-size: clamp(11px, 3.2cqi, 14px);
+      }
+      .ctrl-list { display: flex; max-height: none; max-width: 100%; min-width: 0; overflow-x: auto; gap: 8px; border: 0; padding-bottom: 6px; }
+      .ctrl { width: auto; border: 1px solid var(--line); white-space: nowrap; }
+      .ctrl-copy { display: none; }
+      .ctrl[aria-pressed="true"] { border-color: var(--green); }
+      .stage { min-height: 0; }
+      .lane { grid-template-columns: 1fr; gap: 4px; }
+      .lane i { display: none; }
+      .service-studio { display: flex; flex-direction: column; gap: 0; }
+      .service-studio > div,
+      .service-studio [role="tablist"] { display: contents; }
+      .service-studio .pick { display: none; }
+      #tab-auto { order: 1; }
+      #panel-auto { order: 2; }
+      #tab-env { order: 3; }
+      #panel-env { order: 4; }
+      #tab-gov { order: 5; }
+      #panel-gov { order: 6; }
+      .stab,
+      .stab[aria-selected="true"] {
+        display: block; border: 0; background: transparent; box-shadow: none;
+        padding: 0 0 14px; cursor: default; pointer-events: none;
+      }
+      #tab-env, #tab-gov { padding-top: 36px; }
+      .stab h3,
+      .stab[aria-selected="true"] h3 { color: var(--cream); }
+      .stab .go { display: none; }
+      .service-panel,
+      .service-panel[hidden] { display: block !important; }
+      #panel-gov { margin-bottom: 0; }
+      #auto-viz .pipe { overflow: visible; }
+      #auto-viz .pipe-rail,
+      #auto-viz .pipe-names { min-width: 0; }
+      #auto-viz .node { font-size: 12px; padding: 8px 4px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .meters i::before { width: var(--to); }
+      .lane i::after { width: 100%; }
+      .files li { opacity: 1; transform: none; color: var(--cream); }
+      .logo-rail { overflow-x: auto; }
+      .logo-set[aria-hidden="true"] { display: none; }
+      .logo-set { flex-wrap: wrap; justify-content: center; width: 100%; padding: 0 24px; }
+    }
+  </style>
+  <noscript>
+    <style>
+      .service-panel { display: block !important; margin-bottom: 28px; }
+      .ctrl-copy { max-height: none !important; margin-top: 6px; }
+    </style>
+  </noscript>
+</head>
+<body>
+  <a class="skip" href="#main">Preskočiť na obsah</a>
+  <header class="site-header" id="top">
+    <a class="logo" href="#top" aria-label="ECoding AI domov">
+      <img class="logo-mark" src="images/ecoding-logo.svg" alt="" width="431" height="348">
+      <span>ECoding</span>
+      <span class="logo-ai">AI</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Hlavná navigácia">
+      <a href="#services">Služby</a>
+      <a href="#governance">Riadenie AI</a>
+      <a href="#infrastructure">Infraštruktúra</a>
+      <a href="#about">O nás</a>
+      <a href="#scanverion">Scanverion</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+    <a class="btn header-cta" href="#contact">Ozvite sa <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Otvoriť menu"><span></span><span></span></button>
+  </header>
+
+  <main id="main">
+    <section class="hero is-on" id="hero" data-live>
+      <div class="wrap hero-grid">
+        <div>
+          <p class="kicker">Praktická AI pre firmy <span class="rest">· ECoding</span></p>
+          <h1>Nechajte AI pracovať pre vás.</h1>
+          <p class="lead">Pomáhame firmám zavádzať AI, automatizovať obchodné procesy a stavať bezpečné AI prostredia na mieru.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#services">Pozrieť služby <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+            <a class="link-arrow" href="#contact">Ozvite sa <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+          </div>
+          <p class="hero-meta">Integrácia · Automatizácia · Riadenie</p>
+        </div>
+        <div class="hero-stage" id="hero-stage">
+          <div class="orbit" aria-hidden="true">
+            <span class="dial"></span>
+            <span class="radar"></span>
+            <span class="ring ring-a"><i></i><i></i></span>
+            <span class="ring ring-b"><i></i><i></i><i></i></span>
+            <span class="ring ring-c"><i></i></span>
+          </div>
+          <div class="stage-card" data-step="0">
+            <i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i>
+            <div class="stage-bar">
+              <span class="pulse">Beží</span>
+              <button class="ghost" type="button" data-pause="hero">Pauza</button>
+            </div>
+            <div id="hero-pipe" aria-hidden="true"></div>
+            <div class="sig" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="promises" aria-label="Čo spolupráca zahŕňa">
+      <div class="wrap">
+        <ul class="promise-grid">
+          <li><span>01</span> Kompletné dodanie</li>
+          <li><span>02</span> Vrátane riadenia</li>
+          <li><span>03</span> Vaša infraštruktúra</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="logo-rail" aria-label="Referencie">
+      <div class="logo-track">
+        <div class="logo-set">
+          <img src="images/clients/kooperativa.svg" alt="Kooperativa">
+          <img src="images/clients/komunalna.svg" alt="Komunálna poisťovňa">
+          <img src="images/clients/kooperativa-dss.svg" alt="Kooperativa DSS">
+          <img src="images/clients/incremental.svg" alt="Incremental Solutions">
+          <img class="logo-roche" src="images/clients/roche-legal.png" alt="Roche Legal">
+          <img src="images/clients/dyson.png" alt="Dyson">
+          <img src="images/clients/bespoke.png" alt="Bespoked Holidays">
+          <img src="images/clients/commodious.webp" alt="Commodious">
+          <img src="images/clients/xiveillance.png" alt="Xiveillance">
+          <img src="images/clients/navypools.png" alt="Navy Pools">
+          <img class="logo-vuava" src="images/clients/vuavaviva.svg" alt="VuavaViva">
+        </div>
+        <div class="logo-set" aria-hidden="true">
+          <img src="images/clients/kooperativa.svg" alt="">
+          <img src="images/clients/komunalna.svg" alt="">
+          <img src="images/clients/kooperativa-dss.svg" alt="">
+          <img src="images/clients/incremental.svg" alt="">
+          <img class="logo-roche" src="images/clients/roche-legal.png" alt="">
+          <img src="images/clients/dyson.png" alt="">
+          <img src="images/clients/bespoke.png" alt="">
+          <img src="images/clients/commodious.webp" alt="">
+          <img src="images/clients/xiveillance.png" alt="">
+          <img src="images/clients/navypools.png" alt="">
+          <img class="logo-vuava" src="images/clients/vuavaviva.svg" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services" data-live aria-labelledby="services-title">
+      <div class="wrap">
+        <div class="section-intro">
+          <p class="kicker">01 <span class="rest">Čo robíme</span></p>
+          <h2 id="services-title">Od AI stratégie po reálnu implementáciu.</h2>
+          <p class="lead">Navrhujeme, staviame a nasadzujeme kompletné AI riešenia, od inteligentnej automatizácie po firemnú vývojovú infraštruktúru a riadenie.</p>
+        </div>
+        <div class="service-studio">
+          <div>
+            <p class="pick">Vyberte službu</p>
+            <div role="tablist" aria-label="Služby">
+            <button class="stab" type="button" role="tab" id="tab-auto" aria-controls="panel-auto" aria-selected="true">
+              <span class="num">01</span>
+              <h3>Integrácia a automatizácia AI</h3>
+              <p>Automatizujte obchodné procesy a prepájajte existujúce systémy cez inteligentné AI workflow.</p>
+              <span class="go" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </button>
+            <button class="stab" type="button" role="tab" id="tab-env" aria-controls="panel-env" aria-selected="false">
+              <span class="num">02</span>
+              <h3>Vývojové prostredia s AI</h3>
+              <p>Staviame prostredia, v ktorých tímy vyvíjajú aplikácie cez zadania v prirodzenom jazyku.</p>
+              <span class="go" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </button>
+            <button class="stab" type="button" role="tab" id="tab-gov" aria-controls="panel-gov" aria-selected="false">
+              <span class="num">03</span>
+              <h3>Riadenie a kontrola AI</h3>
+              <p>Nastavte oprávnenia, ľudský dohľad, zodpovednosť a kontrolu nad AI operáciami.</p>
+              <span class="go" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            </button>
+            </div>
+          </div>
+          <div>
+            <article class="service-panel is-active" id="panel-auto" role="tabpanel" aria-labelledby="tab-auto">
+              <div class="viz-shell" id="auto-viz"></div>
+              <ul class="check">
+                <li>Spracovanie dokumentov a extrakcia dát.</li>
+                <li>Automatizované obchodné workflow.</li>
+                <li>Inteligentné reporty a analýza dát.</li>
+                <li>AI agenti a multiagentné systémy.</li>
+                <li>Integrácie API a firemných systémov.</li>
+                <li>Ľudské schválenie a rozhodovacie workflow.</li>
+              </ul>
+            </article>
+            <article class="service-panel" id="panel-env" role="tabpanel" aria-labelledby="tab-env" hidden>
+              <div class="viz-shell" id="env-viz"></div>
+              <ul class="check">
+                <li>Na konci vieme vyvinúť čokoľvek, čo firma potrebuje.</li>
+                <li>Programovanie s pomocou AI a generovanie aplikácií.</li>
+                <li>Automatizované testovanie a nasadenie.</li>
+                <li>Prostredia pre dev, test, prod a ďalšie.</li>
+                <li>Verzovanie, zálohy a Rollback.</li>
+                <li>Správa infraštruktúry a CI/CD.</li>
+              </ul>
+            </article>
+            <article class="service-panel" id="panel-gov" role="tabpanel" aria-labelledby="tab-gov" hidden>
+              <div class="viz-shell" id="gov-preview"></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band" id="governance" data-live aria-labelledby="gov-title">
+      <div class="wrap">
+        <div class="section-intro">
+          <p class="kicker">02 <span class="rest">Riadenie AI</span></p>
+          <h2 id="gov-title">Vaše AI. Vaše pravidlá. Vaša kontrola.</h2>
+          <p class="lead">Zavádzame mechanizmy, vďaka ktorým firmy riadia celý AI ekosystém. Vyberte kontrolu a pozrite si, ako funguje.</p>
+        </div>
+        <div class="studio">
+          <div>
+            <p class="pick">Vyberte kontrolu</p>
+            <div class="ctrl-list" role="group" aria-label="Kontroly riadenia" id="ctrl-list">
+            <button class="ctrl" type="button" data-id="access" aria-pressed="false"><strong>Prístup a oprávnenia</strong><span class="ctrl-copy">Určite, kto môže používať AI a čo AI agenti smú robiť.</span></button>
+            <button class="ctrl" type="button" data-id="oversight" aria-pressed="false"><strong>Ľudský dohľad</strong><span class="ctrl-copy">Zaveďte schvaľovanie, validácie a ľudský zásah.</span></button>
+            <button class="ctrl" type="button" data-id="account" aria-pressed="false"><strong>Zodpovednosť za AI</strong><span class="ctrl-copy">Sledujte AI aktivity, rozhodnutia, zmeny a zodpovedných používateľov.</span></button>
+            <button class="ctrl" type="button" data-id="autonomy" aria-pressed="false"><strong>Kontrola autonómie</strong><span class="ctrl-copy">Definujte, ktoré akcie môže AI robiť samostatne.</span></button>
+            <button class="ctrl" type="button" data-id="data" aria-pressed="false"><strong>Ochrana dát</strong><span class="ctrl-copy">Riaďte prístup k firemným dátam a citlivým informáciám.</span></button>
+            <button class="ctrl" type="button" data-id="monitor" aria-pressed="false"><strong>Monitorovanie a hodnotenie</strong><span class="ctrl-copy">Sledujte správanie, výstupy a výkon AI.</span></button>
+            <button class="ctrl" type="button" data-id="incident" aria-pressed="false"><strong>Riadenie incidentov</strong><span class="ctrl-copy">Riešte neočakávané správanie, chyby a bezpečnostné incidenty.</span></button>
+            <button class="ctrl" type="button" data-id="recovery" aria-pressed="false"><strong>Vykonanie a obnova</strong><span class="ctrl-copy">Zaveďte núdzové zastavenie, zálohy a Rollback.</span></button>
+            <button class="ctrl" type="button" data-id="deploy" aria-pressed="true"><strong>Riadenie nasadenia</strong><span class="ctrl-copy">Majte pod kontrolou vývoj, testovanie, predprodukciu a produkciu.</span></button>
+            <button class="ctrl" type="button" data-id="risk" aria-pressed="false"><strong>Riziko a súlad</strong><span class="ctrl-copy">Zaveďte hodnotenie rizík, dokumentáciu a reportovanie.</span></button>
+            <button class="ctrl" type="button" data-id="loop" aria-pressed="false"><strong>Priebežné riadenie</strong><span class="ctrl-copy">Pravidelne revidujte AI politiky, oprávnenia a kontroly.</span></button>
+            </div>
+          </div>
+          <div class="stage" id="stage">
+            <span class="tick tl" aria-hidden="true"></span><span class="tick tr" aria-hidden="true"></span>
+            <span class="tick bl" aria-hidden="true"></span><span class="tick br" aria-hidden="true"></span>
+            <div class="stage-bar">
+              <span class="pulse">Živá kontrola</span>
+              <button class="ghost" type="button" id="stage-pause">Pauza</button>
+            </div>
+            <h3 id="stage-title">Riadenie nasadenia</h3>
+            <p class="stage-text" id="stage-text">Majte pod kontrolou vývoj, testovanie, predprodukciu a produkciu.</p>
+            <div id="stage-viz"></div>
+            <p class="sr" id="stage-status" role="status"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="infrastructure" data-live aria-labelledby="infra-title">
+      <div class="wrap split">
+        <div>
+          <p class="kicker">03 <span class="rest">Infraštruktúra</span></p>
+          <h2 id="infra-title">Všetko za AI. Postavené tak, aby to fungovalo.</h2>
+          <p class="lead">Navrhujeme a spravujeme infraštruktúru na vývoj, nasadenie, zabezpečenie a škálovanie firemných AI riešení.</p>
+          <ul class="check">
+            <li>Cloud a lokálna infraštruktúra.</li>
+            <li>Infraštruktúra ako kód.</li>
+            <li>CI/CD a automatizované nasadenia.</li>
+            <li>Monitorovanie a pozorovateľnosť.</li>
+            <li>Bezpečnosť a správa prístupov.</li>
+            <li>Zálohy, obnova a stratégie Rollback.</li>
+          </ul>
+          <a class="link-arrow" href="#security" style="margin-top:22px">Bezpečnosť a súlad <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+        </div>
+        <div class="viz-shell" id="tower" aria-hidden="true">
+          <div class="panel-bar"><span>Ilustračný model</span><span id="tower-state">Stavia sa</span></div>
+          <div class="tower">
+            <div class="slab" data-i="4"><strong>Produkcia</strong><em>Riadené vydanie</em></div>
+            <div class="slab" data-i="3"><strong>Predprodukcia</strong><em>Kontrola pred spustením</em></div>
+            <div class="slab" data-i="2"><strong>CI/CD</strong><em>Test a nasadenie</em></div>
+            <div class="slab" data-i="1"><strong>Infraštruktúra ako kód</strong><em>Opakovateľné prostredia</em></div>
+            <div class="slab" data-i="0"><strong>Cloud · Lokálne</strong><em>Tam, kde to potrebujete</em></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band" id="security" aria-labelledby="security-title">
+      <div class="wrap">
+        <div class="section-intro">
+          <p class="kicker">04 <span class="rest">Bezpečnosť a súlad</span></p>
+          <h2 id="security-title">Pripravené pre firmy. Bezpečné už v návrhu.</h2>
+          <p class="lead">Zavádzame bezpečnosť, riadenie rizík, dokumentáciu a riadenie v súlade s relevantnými štandardmi a reguláciou.</p>
+        </div>
+        <div class="standards">
+          <article class="standard"><span>Rámec</span><strong>NIST AI RMF</strong></article>
+          <article class="standard"><span>Systém riadenia</span><strong>ISO 42001</strong></article>
+          <article class="standard"><span>Usmernenie k rizikám</span><strong>ISO 23894</strong></article>
+          <article class="standard"><span>Nariadenie</span><strong>EU AI Act</strong></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" data-live aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="section-intro">
+          <p class="kicker">05 <span class="rest">Ako pracujeme</span></p>
+          <h2 id="work-title">Od nápadu k fungujúcemu riešeniu.</h2>
+        </div>
+        <ol class="steps" id="steps">
+          <li class="step is-on"><span>01</span><strong>Prieskum</strong><p>Pochopíme, čo potrebujete.</p></li>
+          <li class="step"><span>02</span><strong>Návrh</strong><p>Naplánujeme riešenie.</p></li>
+          <li class="step"><span>03</span><strong>Vývoj</strong><p>Vyvinieme a integrujeme.</p></li>
+          <li class="step"><span>04</span><strong>Nasadenie</strong><p>Otestujeme a spustíme.</p></li>
+          <li class="step"><span>05</span><strong>Optimalizácia</strong><p>Sledujeme a zlepšujeme.</p></li>
+        </ol>
+        <div class="section-intro" style="margin-top:80px">
+          <p class="kicker">06 <span class="rest">Prečo ECoding</span></p>
+          <h2>Viac než firma na vývoj AI.</h2>
+          <p class="lead">Dodávame kompletný technický základ, aby si firmy vedeli stavať, automatizovať a prevádzkovať vlastné AI riešenia.</p>
+        </div>
+        <ul class="reasons">
+          <li>Menšia závislosť od tradičných vývojových tímov.</li>
+          <li>Rýchlejší vývoj a implementácia.</li>
+          <li>Infraštruktúra šitá na vašu firmu.</li>
+          <li>Centralizované riadenie a kontrola AI.</li>
+          <li>Škálovateľné riešenia a dlhodobá flexibilita.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section band" id="scanverion" aria-labelledby="products-title">
+      <div class="wrap">
+        <header class="products-head">
+          <p class="kicker">07 <span class="rest">ECoding</span></p>
+          <h2 id="products-title">Naše produkty.</h2>
+        </header>
+        <div class="split">
+          <div>
+            <p class="kicker">Scanverion</p>
+            <h2 id="scan-title">Z obrázka dokumentu k dátam, ktoré vaša aplikácia vie použiť.</h2>
+            <p class="lead">API od ECoding pre tímy, ktoré spracúvajú dokumenty a obrázky. Vytiahne polia, nájde objekty a skontroluje kvalitu obrazu bez samostatných integrácií.</p>
+            <ul class="check">
+              <li>Polia dokumentu a MRZ.</li>
+              <li>Dokumenty, tváre a čiarové kódy.</li>
+              <li>Kontrola rozmazania a otočenia.</li>
+            </ul>
+            <div class="hero-actions">
+              <a class="btn" href="https://scanverion.com/en" target="_blank" rel="noopener">Navštíviť Scanverion <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+              <a class="link-arrow" href="https://ecoding.sk/en/products/scanverion/" target="_blank" rel="noopener">O produkte <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+            </div>
+          </div>
+          <div class="viz-shell" aria-hidden="true">
+            <div class="panel-bar"><span>Ilustračný príklad</span><span>Scanverion / API</span></div>
+            <div class="scan-stage">
+              <div class="scan-doc">
+                <span class="scan-beam"></span>
+                <b>Doklad</b>
+                <i></i><i></i><i class="short"></i><i></i><i class="short"></i>
+              </div>
+              <pre class="scan-json"><b>ODPOVEĎ</b>{
+  "category": "IdentityDocument",
+  "results": {
+    "fields": { "surname": "Specimen" },
+    "blur": { "isBlurred": false },
+    "rotation": { "degrees": 0.4 }
+  }
+}</pre>
+            </div>
+          </div>
+        </div>
+        <div class="see-grid">
+          <article><span>01</span><strong>Dokumentová inteligencia</strong><p>Rozpozná doklady, prečíta polia, overí MRZ a skontroluje kvalitu.</p></article>
+          <article><span>02</span><strong>Vizuálna detekcia</strong><p>Nájde dokumenty, vozidlá, tváre, čiarové kódy, zaškrtávacie polia a podpisy.</p></article>
+          <article><span>03</span><strong>Kvalita a orientácia</strong><p>Zmeria rozmazanie, určí otočenie a priradí výsledok k zdrojovému objektu.</p></article>
+          <article><span>04</span><strong>Validačné služby</strong><p>Overenie stratených alebo odcudzených dokladov a spracovanie adresy.</p></article>
+        </div>
+        <div class="model-pitch">
+          <p class="kicker">Modely</p>
+          <h2>Naše modely.</h2>
+          <p class="lead">Nemusíte začínať tréningom. Scanverion už rozumie dokumentom, tváram, čiarovým kódom a kvalite obrazu. Zavoláte API a v tom istom workflow dostanete štruktúrované dáta.</p>
+          <div class="model-grid">
+            <article><span>01</span><strong>Použite naše</strong><p>Zavoláte API. Model spracuje obrázok a vráti štruktúrované dáta.</p></article>
+            <article><span>02</span><strong>Už vedia čítať</strong><p>Dokumenty, tváre, čiarové kódy a kvalita obrazu. Bez vlastného tréningu.</p></article>
+            <article><span>03</span><strong>Jedno workflow</strong><p>Obrázok príde, dáta odídu. Kontrola kvality je súčasťou odpovede.</p></article>
+          </div>
+          <a class="link-arrow" href="#contact" style="margin-top:28px">Porozprávajme sa o modeloch <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="team" aria-label="Tím">
+      <div class="wrap">
+        <div class="team-row">
+          <article class="team-card">
+            <img src="images/tomas-filip.jpg" alt="Tomáš Filip" width="768" height="960">
+            <p class="role">CEO</p>
+            <h3>Tomáš Filip</h3>
+            <div class="team-links">
+              <a href="mailto:tomas@ecoding.sk">E-mail</a>
+              <a href="https://www.linkedin.com/in/tomas-filip" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+          </article>
+          <article class="team-card">
+            <img src="images/simon-ducak.webp" alt="Šimon Dučák" width="1024" height="1024">
+            <p class="role">Konzultant</p>
+            <h3>Šimon Dučák</h3>
+            <div class="team-links">
+              <a href="tel:+421944076740">+421 944 076 740</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-grid">
+        <div>
+          <p class="kicker">Ozvite sa</p>
+          <h2 id="contact-title">Nechajme AI pracovať pre vašu firmu.</h2>
+          <p class="lead">Povedzte nám o výzvach, nápadoch alebo existujúcej infraštruktúry. Pomôžeme nájsť, kde AI dáva zmysel a ako ju zaviesť.</p>
+          <a class="link-arrow email-link" href="mailto:info@ecoding.sk">info@ecoding.sk <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+        </div>
+        <form id="contact-form">
+          <div class="field"><label for="name">Meno</label><input id="name" name="name" type="text" autocomplete="name" required maxlength="120"></div>
+          <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="200"></div>
+          <div class="field"><label for="company">Firma</label><input id="company" name="company" type="text" autocomplete="organization" maxlength="160"></div>
+          <div class="field"><label for="message">Správa</label><textarea id="message" name="message" required maxlength="2000"></textarea></div>
+          <button class="btn" type="submit">Porozprávajme sa o vašej AI stratégii <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M14 4 H7 M14 4 V11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+          <p class="form-note">Otvorí sa e-mailová aplikácia so správou adresovanou na info@ecoding.sk.</p>
+          <p class="form-status" id="form-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <div>
+        <strong>ECoding AI</strong>
+        <p>Praktická AI pre firmy. Súčasť <a href="https://ecoding.sk/en/">ECoding</a>.</p>
+      </div>
+      <p><a href="mailto:info@ecoding.sk">info@ecoding.sk</a> · <span data-year>2026</span></p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var jobs = new Set();
+      var header = document.querySelector(".site-header");
+      var toggle = document.querySelector(".nav-toggle");
+      var nav = document.querySelector(".nav");
+
+      function setMenu(open) {
+        nav.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "Zavrieť menu" : "Otvoriť menu");
+        document.body.classList.toggle("menu-open", open);
+      }
+      toggle.addEventListener("click", function () { setMenu(toggle.getAttribute("aria-expanded") !== "true"); });
+      nav.querySelectorAll("a").forEach(function (link) { link.addEventListener("click", function () { setMenu(false); }); });
+      document.addEventListener("keydown", function (event) { if (event.key === "Escape") setMenu(false); });
+      function onScroll() { header.classList.toggle("scrolled", window.scrollY > 8); }
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      var year = document.querySelector("[data-year]");
+      if (year) year.textContent = String(new Date().getFullYear());
+
+      var form = document.getElementById("contact-form");
+      var formStatus = document.getElementById("form-status");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var name = form.name.value.trim();
+        var email = form.email.value.trim();
+        var company = form.company.value.trim();
+        var message = form.message.value.trim();
+        if (!name || !email || !message || !form.email.checkValidity()) {
+          form.reportValidity();
+          formStatus.textContent = "Doplňte meno, platný e-mail a krátku správu.";
+          return;
+        }
+        var subject = company ? "AI stratégia — " + company : "AI stratégia — " + name;
+        var body = "Meno: " + name + "\nE-mail: " + email + (company ? "\nFirma: " + company : "") + "\n\n" + message;
+        window.location.href = "mailto:info@ecoding.sk?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+        formStatus.textContent = "E-mailová aplikácia by sa mala otvoriť so správou pre info@ecoding.sk.";
+      });
+
+      var heroStage = document.getElementById("hero-stage");
+      heroStage.addEventListener("pointermove", function (event) {
+        var rect = heroStage.getBoundingClientRect();
+        var px = (event.clientX - rect.left) / rect.width - 0.5;
+        var py = (event.clientY - rect.top) / rect.height - 0.5;
+        heroStage.querySelector(".stage-card").style.setProperty("--mx", (event.clientX - rect.left) + "px");
+        heroStage.querySelector(".stage-card").style.setProperty("--my", (event.clientY - rect.top) + "px");
+        if (!reduce) {
+          heroStage.style.setProperty("--tilt-x", (py * -12).toFixed(2) + "deg");
+          heroStage.style.setProperty("--tilt-y", (px * 14).toFixed(2) + "deg");
+        }
+      });
+
+      document.querySelectorAll("[data-pause]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var host = document.getElementById(button.getAttribute("data-pause"));
+          var paused = host.getAttribute("data-paused") === "true";
+          host.setAttribute("data-paused", paused ? "false" : "true");
+          button.textContent = paused ? "Pauza" : "Spustiť";
+          button.setAttribute("aria-pressed", paused ? "false" : "true");
+        });
+      });
+
+      if (!reduce) {
+        requestAnimationFrame(function frame(now) {
+          jobs.forEach(function (job) { job(now); });
+          requestAnimationFrame(frame);
+        });
+      }
+
+      function track(root, job) {
+        var wrapped = function (now) {
+          if (!root.isConnected) { jobs.delete(wrapped); return; }
+          job(now);
+        };
+        jobs.add(wrapped);
+        return function () { jobs.delete(wrapped); };
+      }
+
+      function paused(root) {
+        var host = root.closest("[data-paused='true']");
+        return !!host;
+      }
+
+      function live(root) {
+        var zone = root.closest("[data-live]");
+        return !zone || zone.classList.contains("is-on");
+      }
+
+      var stack = window.matchMedia("(max-width: 979px)");
+
+      function mountPipe(root, steps, weights, onFrame) {
+        var n = steps.length;
+        root.innerHTML = '<div class="pipe" style="--n:' + n + '"><div class="pipe-rail" aria-hidden="true"><span class="pipe-line"><span class="pipe-fill"></span><span class="packet"></span></span>' +
+          steps.map(function () { return "<i class='dot'></i>"; }).join("") +
+          '</div><div class="pipe-names">' +
+          steps.map(function (step, index) { return "<button type='button' class='node' data-i='" + index + "'><em>0" + (index + 1) + "</em>" + step.name + "</button>"; }).join("") +
+          '</div><p class="note"></p></div>';
+        var pipe = root.querySelector(".pipe");
+        var dots = Array.prototype.slice.call(pipe.querySelectorAll(".dot"));
+        var nodes = Array.prototype.slice.call(pipe.querySelectorAll(".node"));
+        var fill = pipe.querySelector(".pipe-fill");
+        var packet = pipe.querySelector(".packet");
+        var note = pipe.querySelector(".note");
+        var pin = null;
+        var w = weights || steps.map(function () { return 1; });
+        var started = performance.now();
+
+        function render(index, along) {
+          dots.forEach(function (dot, i) { dot.classList.toggle("is-on", i <= index); });
+          nodes.forEach(function (node, i) { node.classList.toggle("is-on", i === index); });
+          fill.style.width = (along * 100) + "%";
+          packet.style.left = (along * 100) + "%";
+          note.textContent = steps[index].note;
+          if (onFrame) onFrame(index, along);
+        }
+
+        nodes.forEach(function (node, index) {
+          node.addEventListener("click", function () {
+            pin = pin === index ? null : index;
+            if (pin !== null) render(pin, n === 1 ? 0 : pin / (n - 1));
+          });
+        });
+        pipe.addEventListener("keydown", function (event) {
+          if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+          event.preventDefault();
+          var current = pin === null ? 0 : pin;
+          var next = event.key === "ArrowRight" ? Math.min(n - 1, current + 1) : Math.max(0, current - 1);
+          pin = next;
+          nodes[next].focus();
+          render(next, n === 1 ? 0 : next / (n - 1));
+        });
+
+        if (reduce) { render(0, 0); return function () {}; }
+
+        return track(root, function (now) {
+          var panel = root.closest(".service-panel");
+          if (panel && !stack.matches && !panel.classList.contains("is-active")) return;
+          if (!live(root) || paused(root)) return;
+          if (pin !== null) { render(pin, n === 1 ? 0 : pin / (n - 1)); return; }
+          var sum = w.reduce(function (a, b) { return a + b; }, 0);
+          var cycle = 1300 * sum;
+          var x = ((now - started) % cycle) / cycle * sum;
+          var i = 0;
+          while (i < n - 1 && x > w[i]) { x -= w[i]; i += 1; }
+          var local = Math.min(1, x / w[i]);
+          var travel = Math.min(1, local / 0.4);
+          var along = n === 1 ? 0 : (i === 0 ? 0 : (i - 1 + travel) / (n - 1));
+          render(i, along);
+        });
+      }
+
+      var promptTimer = 0;
+      function mountPrompt(root) {
+        root.innerHTML = '<div class="panel-bar"><span>Ilustračné prostredie</span><span>ECoding / AI</span></div><p class="prompt-k">01 Zadanie</p><p class="prompt-line"><span class="typed"></span><span class="caret"></span></p><p class="prompt-k">02 Vygenerované</p><ul class="files"><li>web/App.tsx</li><li>api/onboarding.ts</li><li>tests/flow.spec.ts</li><li>release/pipeline.yml</li></ul>';
+        var typed = root.querySelector(".typed");
+        var files = Array.prototype.slice.call(root.querySelectorAll(".files li"));
+        var text = "Postav proces pre nových klientov. Pred akýmkoľvek zápisom vyžaduj schválenie.";
+        window.clearInterval(promptTimer);
+        if (reduce) {
+          typed.textContent = text;
+          files.forEach(function (file) { file.classList.add("in"); });
+          return;
+        }
+        var index = 0;
+        var phase = "type";
+        var hold = 0;
+        typed.textContent = "";
+        files.forEach(function (file) { file.classList.remove("in"); });
+        promptTimer = window.setInterval(function () {
+          var panel = document.getElementById("panel-env");
+          if ((!stack.matches && !panel.classList.contains("is-active")) || paused(root)) return;
+          if (phase === "type") {
+            index += 1;
+            typed.textContent = text.slice(0, index);
+            if (index >= text.length) phase = "files";
+            return;
+          }
+          if (phase === "files") {
+            var next = files.find(function (file) { return !file.classList.contains("in"); });
+            if (next) next.classList.add("in");
+            else phase = "hold";
+            return;
+          }
+          hold += 1;
+          if (hold > 36) mountPrompt(root);
+        }, phase === "hold" ? 180 : 42);
+      }
+
+      function bars(count) {
+        var html = '<div class="bars" aria-hidden="true">';
+        for (var i = 0; i < count; i += 1) html += '<span style="--d:' + i + ';--h:' + (28 + ((i * 37) % 68)) + '%"></span>';
+        return html + "</div>";
+      }
+
+      function lanes(items) {
+        return '<div class="lanes">' + items.map(function (item) {
+          return '<div class="lane ' + item.state + '"><span>' + item.from + '</span><i></i><span>' + item.to + '</span><em>' + item.label + '</em></div>';
+        }).join("") + "</div>";
+      }
+
+      var scenes = {
+        access: function (root) {
+          root.innerHTML = lanes([
+            { state: "ok", from: "Analytik", to: "Čítanie reportov", label: "Povolené" },
+            { state: "ok", from: "Agent", to: "Návrh odpovede", label: "Povolené" },
+            { state: "no", from: "Agent", to: "Zápis produkčných dát", label: "Zastavené" }
+          ]);
+        },
+        oversight: function (root) {
+          return mountPipe(root, [
+            { name: "Priprav", note: "Úloha vstúpi do workflow." },
+            { name: "Vygeneruj", note: "AI pripraví výsledok. Zatiaľ sa nič neodosiela." },
+            { name: "Schváľ", note: "Človek ho skontroluje, než pokračuje ďalej." },
+            { name: "Vydaj", note: "Schválený výsledok ide ďalej." }
+          ], [1, 1, 2.4, 1]);
+        },
+        account: function (root) {
+          var rows = [
+            ["14:02", "agent.draft", "user a.novak"],
+            ["14:02", "policy.check", "povolené"],
+            ["14:03", "approval.ask", "user m.horvat"],
+            ["14:04", "approval.ok", "zaznamenané"],
+            ["14:04", "record.write", "zákazníci"],
+            ["14:05", "change.log", "verzia uložená"]
+          ];
+          root.innerHTML = '<div class="log" aria-hidden="true"></div>';
+          var log = root.querySelector(".log");
+          if (reduce) {
+            log.innerHTML = rows.map(function (row) { return "<div><b>" + row[0] + "</b>  " + row[1] + "  " + row[2] + "</div>"; }).join("");
+            return function () {};
+          }
+          var cursor = 0;
+          return track(root, function (now) {
+            if (!live(root) || paused(root)) return;
+            var tick = Math.floor(now / 700);
+            if (tick === cursor) return;
+            cursor = tick;
+            var row = rows[tick % rows.length];
+            var line = document.createElement("div");
+            line.innerHTML = "<b>" + row[0] + "</b>  " + row[1] + "  " + row[2];
+            log.appendChild(line);
+            while (log.children.length > 6) log.removeChild(log.firstChild);
+          });
+        },
+        autonomy: function (root) {
+          var actions = [
+            ["Zhrnúť dokument", "yes"],
+            ["Návrh odpovede", "yes"],
+            ["E-mail zákazníkovi", "ask"],
+            ["Zmeniť záznam", "no"]
+          ];
+          var labels = { yes: "Povolené", ask: "Treba schválenie", no: "Blokované" };
+          root.innerHTML = '<div class="switches"></div><p class="note">Vyberte, čo môže agent robiť sám.</p>';
+          var box = root.querySelector(".switches");
+          actions.forEach(function (action) {
+            var button = document.createElement("button");
+            button.type = "button";
+            button.dataset.state = action[1];
+            button.innerHTML = "<span>" + action[0] + "</span><em>" + labels[action[1]] + "</em>";
+            button.addEventListener("click", function () {
+              var order = ["yes", "ask", "no"];
+              var next = order[(order.indexOf(button.dataset.state) + 1) % order.length];
+              button.dataset.state = next;
+              button.querySelector("em").textContent = labels[next];
+              root.dataset.touched = "true";
+            });
+            box.appendChild(button);
+          });
+        },
+        data: function (root) {
+          root.innerHTML = lanes([
+            { state: "ok", from: "Tím", to: "Politiky", label: "Otvorené" },
+            { state: "ask", from: "Agent", to: "Záznamy zákazníkov", label: "Schválenie" },
+            { state: "no", from: "Agent", to: "Tajné kľúče", label: "Blokované" }
+          ]);
+        },
+        monitor: function (root) {
+          root.innerHTML = bars(28) + '<p class="note">Výstup, odozva a odchýlka sú viditeľné, kým systém beží.</p>';
+        },
+        incident: function (root) {
+          var states = [
+            ["ok", "Normál", "Výstupy sú v očakávanom rozsahu.", "Normál"],
+            ["signal", "Signál", "Niečo vyzerá nezvyčajne. Tím dostane notifikáciu.", "Signál"],
+            ["contained", "Obmedzené", "Akcia je zastavená a rozsah je obmedzený.", "Obmedzené"],
+            ["restored", "Obnovené", "Služba beží, so záznamom toho, čo sa stalo.", "Obnovené"]
+          ];
+          root.innerHTML = '<div class="incident-status" data-state="ok"><b>Normál</b><span>Výstupy sú v očakávanom rozsahu.</span></div><ol class="timeline"><li class="is-on">Normál</li><li>Signál</li><li>Obmedzené</li><li>Obnovené</li></ol>';
+          var status = root.querySelector(".incident-status");
+          var items = Array.prototype.slice.call(root.querySelectorAll(".timeline li"));
+          if (reduce) return function () {};
+          return track(root, function (now) {
+            if (!live(root) || paused(root)) return;
+            var index = Math.floor(now / 1600) % states.length;
+            var state = states[index];
+            status.dataset.state = state[0];
+            status.querySelector("b").textContent = state[1];
+            status.querySelector("span").textContent = state[2];
+            items.forEach(function (item, i) { item.classList.toggle("is-on", i === index); });
+          });
+        },
+        recovery: function (root) {
+          root.innerHTML = '<div class="versions"><article data-v="2" class="is-current"><b>v1.4</b><span>Beží</span></article><article data-v="1"><b>v1.3</b><span>Kontrolný bod</span></article><article data-v="0"><b>v1.2</b><span>Záloha</span></article></div><p class="note">Vydanie je naživo. Predošlá verzia zostáva pripravená.</p>';
+          var cards = Array.prototype.slice.call(root.querySelectorAll("article"));
+          var note = root.querySelector(".note");
+          if (reduce) return function () {};
+          return track(root, function (now) {
+            if (!live(root) || paused(root)) return;
+            var phase = Math.floor(now / 1800) % 4;
+            var current = phase < 2 ? 2 : 1;
+            cards.forEach(function (card) {
+              var on = Number(card.dataset.v) === current;
+              card.classList.toggle("is-current", on);
+              if (on) card.querySelector("span").textContent = current === 2 ? "Beží" : "Obnovené";
+              else card.querySelector("span").textContent = card.dataset.v === "2" ? "Predošlá" : (card.dataset.v === "1" ? "Kontrolný bod" : "Záloha");
+            });
+            note.textContent = current === 2 ? "Vydanie je naživo. Predošlá verzia zostáva pripravená." : "Rollback na posledný kontrolný bod.";
+          });
+        },
+        deploy: function (root) {
+          return mountPipe(root, [
+            { name: "Zdroj", note: "Zmena je vo verzovaní." },
+            { name: "Zostav", note: "Aplikácia sa zostaví." },
+            { name: "Test", note: "Kontroly bežia skôr, než sa čokoľvek posunie ďalej." },
+            { name: "Predprodukcia", note: "Človek môže skontrolovať vydanie." },
+            { name: "Produkcia", note: "Ide to do produkcie, s pripraveným Rollback." }
+          ], [1, 1, 1.2, 1.8, 1.3]);
+        },
+        risk: function (root) {
+          root.innerHTML = '<div class="meters"><label>Posúdené riziko<i style="--to:64%"></i></label><label>Zdokumentované kontroly<i style="--to:82%"></i></label><label>Otvorené úlohy<i style="--to:28%"></i></label></div><p class="note">Riziko, evidencia a to, čo ešte čaká na rozhodnutie.</p>';
+        },
+        loop: function (root) {
+          root.innerHTML = '<div class="loop" aria-hidden="true"><div class="loop-spin"><i></i></div><ul><li>Revízia</li><li>Úprava</li><li>Použitie</li><li>Sledovanie</li></ul></div><p class="note">Politiky, oprávnenia a kontroly sa revidujú a zlepšujú.</p>';
+        }
+      };
+
+      var ctrlButtons = Array.prototype.slice.call(document.querySelectorAll(".ctrl"));
+      var stageViz = document.getElementById("stage-viz");
+      var stageTitle = document.getElementById("stage-title");
+      var stageText = document.getElementById("stage-text");
+      var stageStatus = document.getElementById("stage-status");
+      var dropViz = function () {};
+      var stagePause = document.getElementById("stage-pause");
+      stagePause.addEventListener("click", function () {
+        var stage = document.getElementById("stage");
+        var pausedNow = stage.getAttribute("data-paused") === "true";
+        stage.setAttribute("data-paused", pausedNow ? "false" : "true");
+        stagePause.textContent = pausedNow ? "Pauza" : "Spustiť";
+        stagePause.setAttribute("aria-pressed", pausedNow ? "false" : "true");
+      });
+
+      function showControl(button, announce) {
+        ctrlButtons.forEach(function (item) { item.setAttribute("aria-pressed", item === button ? "true" : "false"); });
+        dropViz();
+        stageViz.innerHTML = "";
+        stageTitle.textContent = button.querySelector("strong").textContent;
+        stageText.textContent = button.querySelector(".ctrl-copy").textContent;
+        if (announce) stageStatus.textContent = stageTitle.textContent + ". " + stageText.textContent;
+        var stop = scenes[button.dataset.id](stageViz);
+        dropViz = typeof stop === "function" ? stop : function () {};
+        if (window.matchMedia("(max-width: 979px)").matches) button.scrollIntoView({ inline: "center", block: "nearest" });
+      }
+      ctrlButtons.forEach(function (button) {
+        button.addEventListener("click", function () { showControl(button, true); });
+      });
+      showControl(document.querySelector('.ctrl[data-id="deploy"]'), false);
+
+      var heroCard = document.querySelector("#hero-stage .stage-card");
+      var heroStep = -1;
+      mountPipe(document.getElementById("hero-pipe"), [
+        { name: "Prepojenie", note: "Prepojte AI so systémami, ktoré už používate." },
+        { name: "Automatizácia", note: "Rutinnú prácu preberie workflow a dovedie ju až do konca." },
+        { name: "Riadenie", note: "Oprávnenia, dohľad a záznam toho, čo sa stalo." },
+        { name: "Škálovanie", note: "Rastie s firmou a unesie viac tímov, dát aj prostredí." }
+      ], null, function (index) {
+        if (index === heroStep) return;
+        heroStep = index;
+        heroCard.setAttribute("data-step", String(index));
+        var heroNote = heroCard.querySelector(".note");
+        if (!heroNote) return;
+        heroNote.classList.remove("is-fresh");
+        void heroNote.offsetWidth;
+        heroNote.classList.add("is-fresh");
+      });
+
+      mountPipe(document.getElementById("auto-viz"), [
+        { name: "Rozpoznanie", note: "Rozpozná sa požiadavka, správa alebo iný vstup." },
+        { name: "Spracovanie", note: "AI z neho pripraví to, čo treba." },
+        { name: "Kontrola", note: "Pravidlá overia výsledok." },
+        { name: "Schválenie", note: "Človek schváli, než sa čokoľvek zapíše." },
+        { name: "Deployment", note: "Výsledok sa nasadí do systémov, ktoré už používate." }
+      ], [1, 1, 1, 2.2, 1]);
+
+      (function mountGov(root) {
+        var rights = [
+          ["Čítať dokumenty", true],
+          ["Pripraviť záznam", true],
+          ["Zapísať dáta", false]
+        ];
+        root.innerHTML = '<div class="panel-bar"><span>Riadenie</span><span>Kontrola</span></div><div class="gov-split"><div><p class="gov-k">Oprávnenia agenta</p><div class="gov-sws">' +
+          rights.map(function (right) {
+            return '<button type="button" class="gov-sw' + (right[1] ? " is-on" : "") + '" aria-pressed="' + right[1] + '"><span>' + right[0] + '</span><i aria-hidden="true"></i></button>';
+          }).join("") +
+          '</div></div><div class="hitl" data-phase="ask"><p class="gov-k">Human in the loop</p><div class="hitl-card"><div class="hitl-ask"><span class="hitl-who">Agent</span><strong>Chcete zapísať záznam</strong><button type="button" class="hitl-ok">Schváliť</button><p class="hitl-state">Čaká na Human in the loop</p></div><div class="hitl-done"><span class="hitl-who">Agent</span><ul class="hitl-log"></ul></div></div></div></div>';
+        root.querySelectorAll(".gov-sw").forEach(function (button) {
+          button.addEventListener("click", function () {
+            var on = button.getAttribute("aria-pressed") !== "true";
+            button.setAttribute("aria-pressed", on ? "true" : "false");
+            button.classList.toggle("is-on", on);
+          });
+        });
+        var board = root.querySelector(".hitl");
+        var approve = root.querySelector(".hitl-ok");
+        var log = root.querySelector(".hitl-log");
+        var events = ["Schválené", "Zápis súborov", "Deployment do test", "Overenie", "Hotovo"];
+        var stepMs = 860;
+        var caret = document.createElement("span");
+        caret.className = "caret";
+        var phase = "ask";
+        var phaseAt = 0;
+        function renderEvents(elapsed, instant) {
+          var count = instant ? events.length : Math.min(events.length, Math.floor(elapsed / stepMs) + 1);
+          var doneAll = instant || elapsed > events.length * stepMs;
+          var running = null;
+          while (log.children.length < count) {
+            var row = document.createElement("li");
+            row.innerHTML = "<i></i><span></span>";
+            log.appendChild(row);
+          }
+          for (var i = 0; i < count; i += 1) {
+            var item = log.children[i];
+            var label = item.querySelector("span");
+            var finished = doneAll || i < count - 1;
+            if (!finished) {
+              var into = elapsed - i * stepMs;
+              var chars = Math.min(events[i].length, Math.max(0, Math.floor(into / 24)));
+              label.textContent = events[i].slice(0, chars);
+              finished = chars >= events[i].length;
+            } else label.textContent = events[i];
+            item.classList.toggle("is-on", finished);
+            if (!finished) running = item;
+          }
+          if (running) running.querySelector("span").after(caret);
+          else if (caret.parentNode) caret.remove();
+        }
+        function setPhase(next, now) {
+          phase = next;
+          phaseAt = now;
+          board.dataset.phase = next === "type" ? "done" : next;
+          if (next !== "type") { log.innerHTML = ""; caret.remove(); }
+          else if (reduce) renderEvents(0, true);
+        }
+        approve.addEventListener("click", function () { setPhase("type", performance.now()); });
+        if (reduce) {
+          renderEvents(0, true);
+          return;
+        }
+        var armed = false;
+        var frozen = false;
+        var hold = 0;
+        track(root, function (now) {
+          var panel = document.getElementById("panel-gov");
+          var open = stack.matches || panel.classList.contains("is-active");
+          var running = open && live(root) && !paused(root);
+          if (!running) {
+            if (!frozen) { frozen = true; hold = now; }
+            if (!open || !live(root)) armed = false;
+            return;
+          }
+          if (frozen) { phaseAt += now - hold; frozen = false; }
+          if (!armed) { armed = true; setPhase("ask", now); return; }
+          var elapsed = now - phaseAt;
+          if (phase === "ask" && elapsed > 2600) setPhase("press", now);
+          else if (phase === "press" && elapsed > 520) setPhase("type", now);
+          else if (phase === "type") {
+            renderEvents(elapsed, false);
+            if (elapsed > events.length * stepMs + 1500) setPhase("reset", now);
+          } else if (phase === "reset" && elapsed > 640) setPhase("ask", now);
+        });
+      })(document.getElementById("gov-preview"));
+
+      var tabs = Array.prototype.slice.call(document.querySelectorAll(".stab"));
+      function selectTab(tab) {
+        tabs.forEach(function (item) {
+          var on = item === tab;
+          item.setAttribute("aria-selected", on ? "true" : "false");
+          var panel = document.getElementById(item.getAttribute("aria-controls"));
+          panel.classList.toggle("is-active", on);
+          panel.hidden = !on;
+        });
+        if (tab.id === "tab-env") mountPrompt(document.getElementById("env-viz"));
+      }
+      tabs.forEach(function (tab) { tab.addEventListener("click", function () { selectTab(tab); }); });
+      function syncStack() {
+        tabs.forEach(function (tab) {
+          var panel = document.getElementById(tab.getAttribute("aria-controls"));
+          if (stack.matches) {
+            tab.setAttribute("tabindex", "-1");
+            panel.hidden = false;
+          } else {
+            tab.removeAttribute("tabindex");
+            panel.hidden = tab.getAttribute("aria-selected") !== "true";
+          }
+        });
+      }
+      syncStack();
+      stack.addEventListener("change", syncStack);
+      mountPrompt(document.getElementById("env-viz"));
+
+      var tower = document.getElementById("tower");
+      var slabs = Array.prototype.slice.call(tower.querySelectorAll(".slab"));
+      var towerState = document.getElementById("tower-state");
+      if (!reduce) {
+        track(tower, function (now) {
+          if (!live(tower)) return;
+          var step = Math.floor(now / 700) % (slabs.length + 2);
+          slabs.forEach(function (slab) {
+            slab.classList.toggle("lit", Number(slab.dataset.i) <= Math.min(step, slabs.length - 1) && step < slabs.length + 1);
+          });
+          towerState.textContent = step >= slabs.length ? "Naživo" : "Stavia sa";
+        });
+      } else {
+        slabs.forEach(function (slab) { slab.classList.add("lit"); });
+        towerState.textContent = "Naživo";
+      }
+
+      var steps = Array.prototype.slice.call(document.querySelectorAll("#steps .step"));
+      if (!reduce) {
+        track(document.getElementById("about"), function (now) {
+          if (!document.getElementById("about").classList.contains("is-on")) return;
+          var index = Math.floor(now / 1600) % steps.length;
+          steps.forEach(function (step, i) { step.classList.toggle("is-on", i === index); });
+        });
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { entry.target.classList.toggle("is-on", entry.isIntersecting); });
+      }, { threshold: 0.2 });
+      document.querySelectorAll("[data-live]").forEach(function (zone) { observer.observe(zone); });
+    })();
+  </script>
+</body>
+</html>

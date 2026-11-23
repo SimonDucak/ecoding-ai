@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ECoding AI | Praktická AI pre firmy</title>
+  <meta name="description" content="ECoding pomáha firmám zavádzať AI, automatizovať obchodné procesy a stavať bezpečné AI prostredia s riadením a infraštruktúrou.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231c1915'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia' font-size='16' fill='%23f3efe6'%3EE%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #0a0a0a;
+      --ink: #f4f1ea;
+      --muted: rgba(244, 241, 234, 0.72);
+      --faint: rgba(244, 241, 234, 0.46);
+      --line: rgba(244, 241, 234, 0.16);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; color-scheme: dark; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Syne, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, input, textarea { font: inherit; color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    ul, ol { margin: 0; padding: 0; list-style: none; }
+    :focus { outline: none; }
+    :focus-visible { outline: 1px solid var(--ink); outline-offset: 3px; }
+    .skip {
+      position: absolute; left: 16px; top: -48px;
+      background: var(--ink); color: var(--paper); padding: 8px 12px; text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+    .sheet { width: min(720px, calc(100% - 40px)); margin: 0 auto; }
+    .wide { width: min(880px, calc(100% - 40px)); margin: 0 auto; }
+
+    .top {
+      position: relative;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 28px 0 18px;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand img { width: 36px; height: 30px; }
+    .brand span { font-size: 26px; font-weight: 700; letter-spacing: -0.04em; }
+    .brand i { font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; margin-left: 2px; }
+    .nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
+    .nav a { text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .nav a:hover { color: var(--ink); }
+    .menu-btn { display: none; background: none; border: 0; padding: 8px 0; letter-spacing: 0.14em; text-transform: uppercase; font-size: 12px; font-weight: 700; cursor: pointer; }
+
+    .hero { padding: 72px 0 28px; text-align: center; }
+    .eyebrow {
+      color: var(--faint); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+    }
+    h1, h2, h3 { font-weight: 700; letter-spacing: -0.045em; }
+    h1 { margin-top: 16px; font-size: clamp(3rem, 7vw, 4.8rem); line-height: 0.98; }
+    .lede { max-width: 38rem; margin: 22px auto 0; color: var(--muted); font-size: 1.05rem; }
+    .rule { border: 0; border-top: 1px solid var(--line); margin: 36px auto; }
+    .rule.short { width: 72px; }
+
+    .course { padding: 8px 0 48px; }
+    .course header { text-align: center; margin-bottom: 28px; }
+    .course header h2 { margin-top: 10px; font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.05; }
+    .course header p { margin: 14px auto 0; max-width: 38rem; color: var(--muted); }
+
+    .item { display: grid; grid-template-columns: 3.2rem 1fr; gap: 8px 16px; padding: 18px 0; border-top: 1px solid var(--line); }
+    .item .no { color: var(--faint); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; padding-top: 8px; }
+    .item h3 { font-size: 1.55rem; line-height: 1.15; }
+    .item p { margin-top: 6px; color: var(--muted); }
+    .note { margin-top: 8px; color: var(--ink); font-size: 14px; letter-spacing: 0.01em; }
+
+    .plain { padding: 4px 0; }
+    .plain li { padding: 11px 0; border-top: 1px solid var(--line); }
+    .plain li:last-child { border-bottom: 1px solid var(--line); }
+
+    .clients { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 28px 36px; padding: 8px 0 56px; }
+    .clients img { height: 28px; width: auto; max-width: 140px; object-fit: contain; filter: brightness(0) invert(1); }
+    .clients img.roche { height: 36px; width: 36px; filter: none; }
+    .clients img.vuava { height: 16px; }
+
+    .standards { display: grid; grid-template-columns: 1fr 1fr; }
+    .standards article { padding: 18px 0; border-top: 1px solid var(--line); }
+    .standards span { display: block; color: var(--faint); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .standards strong { display: block; margin-top: 4px; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.04em; }
+
+    .sample {
+      margin-top: 22px; padding: 16px 0 0;
+      border-top: 1px solid var(--line);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px; line-height: 1.6; color: var(--muted); white-space: pre-wrap;
+    }
+    .sample b { display: block; margin-bottom: 8px; color: var(--faint); font-family: Syne, Arial, sans-serif; font-size: 11px; letter-spacing: 0.16em; }
+
+    .team { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding-bottom: 24px; }
+    .team img { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-fit: cover; object-position: center 18%; filter: grayscale(1); }
+    .team .role { margin-top: 14px; color: var(--faint); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .team h3 { font-size: 1.7rem; }
+    .team a { display: inline-block; margin: 10px 16px 0 0; color: var(--ink); font-size: 14px; }
+
+    form { margin-top: 8px; }
+    label { display: block; margin-top: 18px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+    input, textarea {
+      width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line);
+      padding: 10px 0 12px; border-radius: 0;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    input:focus, textarea:focus { border-bottom-color: var(--ink); }
+    input:-webkit-autofill { -webkit-text-fill-color: var(--ink); box-shadow: 0 0 0 1000px var(--paper) inset; caret-color: var(--ink); }
+    .send {
+      margin-top: 22px; background: var(--ink); color: var(--paper); border: 0;
+      padding: 14px 18px; cursor: pointer; letter-spacing: -0.03em; font-weight: 700;
+    }
+    .send:hover { background: #fff; }
+    .fine { margin-top: 12px; color: var(--faint); font-size: 14px; }
+    .fine:empty { display: none; }
+
+    .foot { padding: 28px 0 48px; color: var(--muted); font-size: 14px; text-align: center; }
+    .foot a { font-weight: 600; }
+
+    @media (max-width: 720px) {
+      .menu-btn { display: block; }
+      .nav { display: none; position: absolute; left: 20px; right: 20px; top: 78px; background: var(--paper); border-bottom: 1px solid var(--line); padding: 8px 0 18px; }
+      .nav.is-open { display: grid; gap: 12px; }
+      .standards, .team { grid-template-columns: 1fr; }
+      h1 { font-size: 2.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Preskočiť na obsah</a>
+  <header class="sheet top">
+    <a class="brand" href="#top" aria-label="ECoding AI domov">
+      <img src="images/ecoding-logo.svg" alt="" width="431" height="348">
+      <span>ECoding <i>AI</i></span>
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Hlavná navigácia">
+      <a href="#services">Služby</a>
+      <a href="#governance">Riadenie</a>
+      <a href="#infrastructure">Infraštruktúra</a>
+      <a href="#about">O nás</a>
+      <a href="#scanverion">Scanverion</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="sheet hero" id="top">
+      <p class="eyebrow">Praktická AI pre firmy · ECoding</p>
+      <h1>Nechajte AI pracovať pre vás.</h1>
+      <p class="lede">Pomáhame firmám zavádzať AI, automatizovať obchodné procesy a stavať bezpečné AI prostredia na mieru.</p>
+      <hr class="rule short">
+      <p class="eyebrow">Integrácia · Automatizácia · Riadenie</p>
+    </section>
+
+    <section class="sheet" aria-label="Ako to prebieha">
+      <article class="item"><span class="no">01</span><div><h3>Prepojenie</h3><p>Prepojte AI so systémami, ktoré už používate.</p></div></article>
+      <article class="item"><span class="no">02</span><div><h3>Automatizácia</h3><p>Rutinnú prácu preberie workflow a dovedie ju až do konca.</p></div></article>
+      <article class="item"><span class="no">03</span><div><h3>Riadenie</h3><p>Oprávnenia, dohľad a záznam toho, čo sa stalo.</p></div></article>
+      <article class="item"><span class="no">04</span><div><h3>Škálovanie</h3><p>Rastie s firmou a unesie viac tímov, dát aj prostredí.</p></div></article>
+    </section>
+
+    <section class="sheet" aria-label="Čo spolupráca zahŕňa">
+      <article class="item"><span class="no">01</span><div><h3>Kompletné dodanie</h3></div></article>
+      <article class="item"><span class="no">02</span><div><h3>Vrátane riadenia</h3></div></article>
+      <article class="item"><span class="no">03</span><div><h3>Vaša infraštruktúra</h3></div></article>
+    </section>
+
+    <section class="wide clients" aria-label="Referencie">
+      <img src="images/clients/kooperativa.svg" alt="Kooperativa">
+      <img src="images/clients/komunalna.svg" alt="Komunálna poisťovňa">
+      <img src="images/clients/kooperativa-dss.svg" alt="Kooperativa DSS">
+      <img src="images/clients/incremental.svg" alt="Incremental Solutions">
+      <img class="roche" src="images/clients/roche-legal.png" alt="Roche Legal">
+      <img src="images/clients/dyson.png" alt="Dyson">
+      <img src="images/clients/bespoke.png" alt="Bespoked Holidays">
+      <img src="images/clients/commodious.webp" alt="Commodious">
+      <img src="images/clients/xiveillance.png" alt="Xiveillance">
+      <img src="images/clients/navypools.png" alt="Navy Pools">
+      <img class="vuava" src="images/clients/vuavaviva.svg" alt="VuavaViva">
+    </section>
+
+    <section class="sheet course" id="services" aria-labelledby="services-title">
+      <header>
+        <p class="eyebrow">01 Čo robíme</p>
+        <h2 id="services-title">Od AI stratégie po reálnu implementáciu.</h2>
+        <p>Navrhujeme, staviame a nasadzujeme kompletné AI riešenia, od inteligentnej automatizácie po firemnú vývojovú infraštruktúru a riadenie.</p>
+      </header>
+      <article class="item">
+        <span class="no">01</span>
+        <div>
+          <h3>Integrácia a automatizácia AI</h3>
+          <p>Automatizujte obchodné procesy a prepájajte existujúce systémy cez inteligentné AI workflow.</p>
+          <p class="note">Rozpoznanie · Spracovanie · Kontrola · Schválenie · Deployment</p>
+          <ul class="plain">
+            <li>Spracovanie dokumentov a extrakcia dát.</li>
+            <li>Automatizované obchodné workflow.</li>
+            <li>Inteligentné reporty a analýza dát.</li>
+            <li>AI agenti a multiagentné systémy.</li>
+            <li>Integrácie API a firemných systémov.</li>
+            <li>Ľudské schválenie a rozhodovacie workflow.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="item">
+        <span class="no">02</span>
+        <div>
+          <h3>Vývojové prostredia s AI</h3>
+          <p>Staviame prostredia, v ktorých tímy vyvíjajú aplikácie cez zadania v prirodzenom jazyku.</p>
+          <ul class="plain">
+            <li>Na konci vieme vyvinúť čokoľvek, čo firma potrebuje.</li>
+            <li>Programovanie s pomocou AI a generovanie aplikácií.</li>
+            <li>Automatizované testovanie a nasadenie.</li>
+            <li>Prostredia pre dev, test, prod a ďalšie.</li>
+            <li>Verzovanie, zálohy a Rollback.</li>
+            <li>Správa infraštruktúry a CI/CD.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="item">
+        <span class="no">03</span>
+        <div>
+          <h3>Riadenie a kontrola AI</h3>
+          <p>Nastavte oprávnenia, ľudský dohľad, zodpovednosť a kontrolu nad AI operáciami.</p>
+          <p class="note">Čítať dokumenty · Pripraviť záznam · Zápis dát až po Human in the loop</p>
+          <p class="note">Schválené · Zápis súborov · Deployment do test · Overenie · Hotovo</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="sheet course" id="governance" aria-labelledby="gov-title">
+      <header>
+        <p class="eyebrow">02 Riadenie AI</p>
+        <h2 id="gov-title">Vaše AI. Vaše pravidlá. Vaša kontrola.</h2>
+        <p>Zavádzame mechanizmy, vďaka ktorým firmy riadia celý AI ekosystém.</p>
+      </header>
+      <article class="item"><span class="no">01</span><div><h3>Prístup a oprávnenia</h3><p>Určite, kto môže používať AI a čo AI agenti smú robiť.</p></div></article>
+      <article class="item"><span class="no">02</span><div><h3>Ľudský dohľad</h3><p>Zaveďte schvaľovanie, validácie a ľudský zásah.</p></div></article>
+      <article class="item"><span class="no">03</span><div><h3>Zodpovednosť za AI</h3><p>Sledujte AI aktivity, rozhodnutia, zmeny a zodpovedných používateľov.</p></div></article>
+      <article class="item"><span class="no">04</span><div><h3>Kontrola autonómie</h3><p>Definujte, ktoré akcie môže AI robiť samostatne.</p></div></article>
+      <article class="item"><span class="no">05</span><div><h3>Ochrana dát</h3><p>Riaďte prístup k firemným dátam a citlivým informáciám.</p></div></article>
+      <article class="item"><span class="no">06</span><div><h3>Monitorovanie a hodnotenie</h3><p>Sledujte správanie, výstupy a výkon AI.</p></div></article>
+      <article class="item"><span class="no">07</span><div><h3>Riadenie incidentov</h3><p>Riešte neočakávané správanie, chyby a bezpečnostné incidenty.</p></div></article>
+      <article class="item"><span class="no">08</span><div><h3>Vykonanie a obnova</h3><p>Zaveďte núdzové zastavenie, zálohy a Rollback.</p></div></article>
+      <article class="item"><span class="no">09</span><div><h3>Riadenie nasadenia</h3><p>Majte pod kontrolou vývoj, testovanie, predprodukciu a produkciu.</p></div></article>
+      <article class="item"><span class="no">10</span><div><h3>Riziko a súlad</h3><p>Zaveďte hodnotenie rizík, dokumentáciu a reportovanie.</p></div></article>
+      <article class="item"><span class="no">11</span><div><h3>Priebežné riadenie</h3><p>Pravidelne revidujte AI politiky, oprávnenia a kontroly.</p></div></article>
+    </section>
+
+    <section class="sheet course" id="infrastructure" aria-labelledby="infra-title">
+      <header>
+        <p class="eyebrow">03 Infraštruktúra</p>
+        <h2 id="infra-title">Všetko za AI. Postavené tak, aby to fungovalo.</h2>
+        <p>Navrhujeme a spravujeme infraštruktúru na vývoj, nasadenie, zabezpečenie a škálovanie firemných AI riešení.</p>
+      </header>
+      <ul class="plain">
+        <li>Cloud a lokálna infraštruktúra.</li>
+        <li>Infraštruktúra ako kód.</li>
+        <li>CI/CD a automatizované nasadenia.</li>
+        <li>Monitorovanie a pozorovateľnosť.</li>
+        <li>Bezpečnosť a správa prístupov.</li>
+        <li>Zálohy, obnova a stratégie Rollback.</li>
+      </ul>
+      <article class="item"><span class="no">01</span><div><h3>Cloud · Lokálne</h3><p>Tam, kde to potrebujete.</p></div></article>
+      <article class="item"><span class="no">02</span><div><h3>Infraštruktúra ako kód</h3><p>Opakovateľné prostredia.</p></div></article>
+      <article class="item"><span class="no">03</span><div><h3>CI/CD</h3><p>Test a nasadenie.</p></div></article>
+      <article class="item"><span class="no">04</span><div><h3>Predprodukcia</h3><p>Kontrola pred spustením.</p></div></article>
+      <article class="item"><span class="no">05</span><div><h3>Produkcia</h3><p>Riadené vydanie.</p></div></article>
+    </section>
+
+    <section class="sheet course" id="security" aria-labelledby="security-title">
+      <header>
+        <p class="eyebrow">04 Bezpečnosť a súlad</p>
+        <h2 id="security-title">Pripravené pre firmy. Bezpečné už v návrhu.</h2>
+        <p>Zavádzame bezpečnosť, riadenie rizík, dokumentáciu a riadenie v súlade s relevantnými štandardmi a reguláciou.</p>
+      </header>
+      <div class="standards">
+        <article><span>Rámec</span><strong>NIST AI RMF</strong></article>
+        <article><span>Systém riadenia</span><strong>ISO 42001</strong></article>
+        <article><span>Usmernenie k rizikám</span><strong>ISO 23894</strong></article>
+        <article><span>Nariadenie</span><strong>EU AI Act</strong></article>
+      </div>
+    </section>
+
+    <section class="sheet course" id="about" aria-labelledby="work-title">
+      <header>
+        <p class="eyebrow">05 Ako pracujeme</p>
+        <h2 id="work-title">Od nápadu k fungujúcemu riešeniu.</h2>
+      </header>
+      <article class="item"><span class="no">01</span><div><h3>Prieskum</h3><p>Pochopíme, čo potrebujete.</p></div></article>
+      <article class="item"><span class="no">02</span><div><h3>Návrh</h3><p>Naplánujeme riešenie.</p></div></article>
+      <article class="item"><span class="no">03</span><div><h3>Vývoj</h3><p>Vyvinieme a integrujeme.</p></div></article>
+      <article class="item"><span class="no">04</span><div><h3>Nasadenie</h3><p>Otestujeme a spustíme.</p></div></article>
+      <article class="item"><span class="no">05</span><div><h3>Optimalizácia</h3><p>Sledujeme a zlepšujeme.</p></div></article>
+      <header style="margin-top:64px">
+        <p class="eyebrow">06 Prečo ECoding</p>
+        <h2>Viac než firma na vývoj AI.</h2>
+        <p>Dodávame kompletný technický základ, aby si firmy vedeli stavať, automatizovať a prevádzkovať vlastné AI riešenia.</p>
+      </header>
+      <ul class="plain">
+        <li>Menšia závislosť od tradičných vývojových tímov.</li>
+        <li>Rýchlejší vývoj a implementácia.</li>
+        <li>Infraštruktúra šitá na vašu firmu.</li>
+        <li>Centralizované riadenie a kontrola AI.</li>
+        <li>Škálovateľné riešenia a dlhodobá flexibilita.</li>
+      </ul>
+    </section>
+
+    <section class="sheet course" id="scanverion" aria-labelledby="products-title">
+      <header>
+        <p class="eyebrow">07 ECoding</p>
+        <h2 id="products-title">Naše produkty.</h2>
+      </header>
+      <article class="item">
+        <span class="no">01</span>
+        <div>
+          <h3>Scanverion</h3>
+          <p>Z obrázka dokumentu k dátam, ktoré vaša aplikácia vie použiť. API od ECoding pre tímy, ktoré spracúvajú dokumenty a obrázky. Vytiahne polia, nájde objekty a skontroluje kvalitu obrazu bez samostatných integrácií.</p>
+          <ul class="plain">
+            <li>Polia dokumentu a MRZ.</li>
+            <li>Dokumenty, tváre a čiarové kódy.</li>
+            <li>Kontrola rozmazania a otočenia.</li>
+          </ul>
+          <p class="note"><a href="https://scanverion.com/en" target="_blank" rel="noopener">Navštíviť Scanverion</a> · <a href="https://ecoding.sk/en/products/scanverion/" target="_blank" rel="noopener">O produkte</a></p>
+          <pre class="sample"><b>Ilustračný príklad</b>{
+  "category": "IdentityDocument",
+  "results": {
+    "fields": { "surname": "Specimen" },
+    "blur": { "isBlurred": false },
+    "rotation": { "degrees": 0.4 }
+  }
+}</pre>
+        </div>
+      </article>
+      <article class="item"><span class="no">02</span><div><h3>Dokumentová inteligencia</h3><p>Rozpozná doklady, prečíta polia, overí MRZ a skontroluje kvalitu.</p></div></article>
+      <article class="item"><span class="no">03</span><div><h3>Vizuálna detekcia</h3><p>Nájde dokumenty, vozidlá, tváre, čiarové kódy, zaškrtávacie polia a podpisy.</p></div></article>
+      <article class="item"><span class="no">04</span><div><h3>Kvalita a orientácia</h3><p>Zmeria rozmazanie, určí otočenie a priradí výsledok k zdrojovému objektu.</p></div></article>
+      <article class="item"><span class="no">05</span><div><h3>Validačné služby</h3><p>Overenie stratených alebo odcudzených dokladov a spracovanie adresy.</p></div></article>
+      <header style="margin-top:64px">
+        <p class="eyebrow">Modely</p>
+        <h2>Naše modely.</h2>
+        <p>Nemusíte začínať tréningom. Scanverion už rozumie dokumentom, tváram, čiarovým kódom a kvalite obrazu. Zavoláte API a v tom istom workflow dostanete štruktúrované dáta.</p>
+      </header>
+      <article class="item"><span class="no">01</span><div><h3>Použite naše</h3><p>Zavoláte API. Model spracuje obrázok a vráti štruktúrované dáta.</p></div></article>
+      <article class="item"><span class="no">02</span><div><h3>Už vedia čítať</h3><p>Dokumenty, tváre, čiarové kódy a kvalita obrazu. Bez vlastného tréningu.</p></div></article>
+      <article class="item"><span class="no">03</span><div><h3>Jedno workflow</h3><p>Obrázok príde, dáta odídu. Kontrola kvality je súčasťou odpovede.</p></div></article>
+      <p class="note" style="text-align:center;margin-top:22px"><a href="#contact">Porozprávajme sa o modeloch</a></p>
+    </section>
+
+    <section class="sheet course" id="team" aria-label="Tím">
+      <header>
+        <h2>Tím</h2>
+      </header>
+      <div class="team">
+        <article>
+          <img src="images/tomas-filip.jpg" alt="Tomáš Filip" width="768" height="960">
+          <p class="role">CEO</p>
+          <h3>Tomáš Filip</h3>
+          <a href="mailto:tomas@ecoding.sk">tomas@ecoding.sk</a>
+          <a href="https://www.linkedin.com/in/tomas-filip" target="_blank" rel="noopener">LinkedIn</a>
+        </article>
+        <article>
+          <img src="images/simon-ducak.webp" alt="Šimon Dučák" width="1024" height="1024">
+          <p class="role">Konzultant</p>
+          <h3>Šimon Dučák</h3>
+          <a href="tel:+421944076740">+421 944 076 740</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="sheet course" id="contact" aria-labelledby="contact-title">
+      <header>
+        <p class="eyebrow">Ozvite sa</p>
+        <h2 id="contact-title">Nechajme AI pracovať pre vašu firmu.</h2>
+        <p>Povedzte nám o výzvach, nápadoch alebo existujúcej infraštruktúry. Pomôžeme nájsť, kde AI dáva zmysel a ako ju zaviesť.</p>
+        <p class="note"><a href="mailto:info@ecoding.sk">info@ecoding.sk</a></p>
+      </header>
+      <form id="contact-form">
+        <label for="name">Meno</label>
+        <input id="name" name="name" type="text" autocomplete="name" required maxlength="120">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" required maxlength="200">
+        <label for="company">Firma</label>
+        <input id="company" name="company" type="text" autocomplete="organization" maxlength="160">
+        <label for="message">Správa</label>
+        <textarea id="message" name="message" required maxlength="2000"></textarea>
+        <button class="send" type="submit">Porozprávajme sa o vašej AI stratégii</button>
+        <p class="fine">Otvorí sa e-mailová aplikácia so správou adresovanou na info@ecoding.sk.</p>
+        <p class="fine" id="form-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="sheet foot">
+    <p>Praktická AI pre firmy. Súčasť <a href="https://ecoding.sk/en/">ECoding</a>.</p>
+    <p><a href="mailto:info@ecoding.sk">info@ecoding.sk</a> · <span data-year>2026</span></p>
+  </footer>
+
+  <script>
+    (function () {
+      var button = document.querySelector(".menu-btn");
+      var nav = document.getElementById("nav");
+      button.addEventListener("click", function () {
+        var open = button.getAttribute("aria-expanded") !== "true";
+        button.setAttribute("aria-expanded", open ? "true" : "false");
+        nav.classList.toggle("is-open", open);
+      });
+      nav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          button.setAttribute("aria-expanded", "false");
+          nav.classList.remove("is-open");
+        });
+      });
+      var year = document.querySelector("[data-year]");
+      if (year) year.textContent = String(new Date().getFullYear());
+
+      var form = document.getElementById("contact-form");
+      var formStatus = document.getElementById("form-status");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var name = form.name.value.trim();
+        var email = form.email.value.trim();
+        var company = form.company.value.trim();
+        var message = form.message.value.trim();
+        if (!name || !email || !message || !form.email.checkValidity()) {
+          form.reportValidity();
+          formStatus.textContent = "Doplňte meno, platný e-mail a krátku správu.";
+          return;
+        }
+        var subject = company ? "AI stratégia — " + company : "AI stratégia — " + name;
+        var body = "Meno: " + name + "\nE-mail: " + email + (company ? "\nFirma: " + company : "") + "\n\n" + message;
+        window.location.href = "mailto:info@ecoding.sk?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+        formStatus.textContent = "E-mailová aplikácia by sa mala otvoriť so správou pre info@ecoding.sk.";
+      });
+    })();
+  </script>
+</body>
+</html>
